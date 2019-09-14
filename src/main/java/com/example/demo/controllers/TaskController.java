@@ -21,7 +21,7 @@ public class TaskController {
     @PostMapping("/tasks")
     Task insertTask(@RequestBody Task newTask){ return repository.save(newTask); }
 
-    @GetMapping("/task/{id}")
+    @GetMapping("/task_id/{id}")
     Task getTaskId(@PathVariable Long id){
         return repository.findTaskById(id);
     }
@@ -31,7 +31,7 @@ public class TaskController {
         return repository.findTaskByType(type);
     }
 
-    @GetMapping("/task/{state}")
+    @GetMapping("/task_state/{state}")
     Task getTaskState(@PathVariable Integer state){
         return repository.findTaskByState(state);
     }
