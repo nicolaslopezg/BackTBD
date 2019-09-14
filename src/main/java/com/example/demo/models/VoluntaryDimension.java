@@ -1,17 +1,16 @@
 package com.example.demo.Models;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.lang.NonNull;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "voluntary_dimensions")
 
 public class VoluntaryDimension {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
     @NonNull
@@ -20,7 +19,7 @@ public class VoluntaryDimension {
     @NonNull
     private Integer quantity;
 
-    // Faltan ser llaves foraneas.
+    // Faltan las llaves foraneas.
 
     public Long getId() {
         return id;

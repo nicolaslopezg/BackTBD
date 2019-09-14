@@ -4,7 +4,11 @@ import com.example.demo.Models.Task;
 import com.example.demo.Repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
@@ -18,22 +22,27 @@ public class TaskController {
     @GetMapping("/tasks")
     public List<Task> getAll(){return repository.findAll(); }
 
+    @GetMapping("/tasks/{id}")
+    Optional<Task> getTaskId(@PathVariable Long id) { return repository.findById(id); }
+
     @PostMapping("/tasks")
-    Task insertTask(@RequestBody Task newTask){ return repository.save(newTask); }
+    Task insertTask(@RequestBody Task newTask) { return repository.save(newTask); }
 
-    @GetMapping("/task_id/{id}")
-    Task getTaskId(@PathVariable Long id){
-        return repository.findTaskById(id);
+    // Falta que mande error si no se encuentra.
+    // Falta que mande el mensaje de exito.
+    @PutMapping("/tasks/{id}")
+    public ResponseEntity<Object> updateStudent(@RequestBody Task student, @PathVariable long id) {
+
+        Optional<Task> studentOptional = repository.findById(id);
+        if (!studentOptional.isPresent())
+            return ResponseEntity.notFound().build();
+        student.setId(id);
+        repository.save(student);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/task/{type}")
-    Task getTaskType(@PathVariable String type){
-        return repository.findTaskByType(type);
-    }
-
-    @GetMapping("/task_state/{state}")
-    Task getTaskState(@PathVariable Integer state){
-        return repository.findTaskByState(state);
-    }
+    // Falta que mande el mensaje de exito.
+    @DeleteMapping("/tasks/{id}")
+    public void deleteTask(@PathVariable Long id) { repository.deleteById(id); }
 
 }
