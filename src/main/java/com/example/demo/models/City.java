@@ -8,9 +8,10 @@ import javax.persistence.*;
 @Table(name = "Cities")
 
 public class City {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="native")
-    @GenericGenerator(name = "native", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NonNull
