@@ -31,15 +31,16 @@ public class TaskController {
     // Falta que mande error si no se encuentra.
     // Falta que mande el mensaje de exito.
     @PutMapping("/tasks/{id}")
-    public ResponseEntity<Object> updateStudent(@RequestBody Task student, @PathVariable long id) {
+    public ResponseEntity<Object> updateTask(@RequestBody Task task, @PathVariable long id) {
 
-        Optional<Task> studentOptional = repository.findById(id);
-        if (!studentOptional.isPresent())
+        Optional<Task> taskOptional = repository.findById(id);
+        if (!taskOptional.isPresent())
             return ResponseEntity.notFound().build();
-        student.setId(id);
-        repository.save(student);
+        task.setId(id);
+        repository.save(task);
         return ResponseEntity.noContent().build();
     }
+
 
     // Falta que mande el mensaje de exito.
     @DeleteMapping("/tasks/{id}")

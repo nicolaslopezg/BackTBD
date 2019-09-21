@@ -1,8 +1,8 @@
-package com.example.demo.controllers;
+package com.example.demo.Controllers;
 
 
-import com.example.demo.models.Equipment;
-import com.example.demo.repositories.EquipmentRepository;
+import com.example.demo.Models.Equipment;
+import com.example.demo.Repositories.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,14 +1,12 @@
-package com.example.demo.controllers;
+package com.example.demo.Controllers;
 
 import com.example.demo.Models.Task;
-import com.example.demo.Repositories.TaskRepository;
-import com.example.demo.models.Emergency;
-import com.example.demo.repositories.EmergencyRepository;
+import com.example.demo.Models.Emergency;
+import com.example.demo.Repositories.EmergencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +42,9 @@ public class EmergencyController {
     @DeleteMapping("/emergencies/{id}")
     public void deleteEmergency(@PathVariable Long id) { repository.deleteById(id); }
 
+    @GetMapping("/taskByEmergency")
+    public void getTaskByEmergencies(@PathVariable Long id) {
+        // Tengo la ID de la emergencia.
+        // Tengo en un List<Task> a todas las tareas que tienen por llave foranea a la id de emergencia.
+    }
 }

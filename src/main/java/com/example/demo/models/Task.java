@@ -29,43 +29,39 @@ public class Task {
     @Column(nullable = false, name = "`state`", unique = true)
     private Integer state;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn
+    private Emergency emergency;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn
+    private Requirement requirement;
 
-    public String getType() {
-        return type;
-    }
+    @ManyToOne
+    @JoinColumn
+    private User user;
+    /*
+    @ManyToOne
+    @JoinColumn
+    private Voluntary voluntary;*/
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public Long getId() { return id; }
 
-    public String getDescription() {
-        return description;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getType() { return type; }
 
-    public Integer getCapacity() {
-        return capacity;
-    }
+    public void setType(String type) { this.type = type; }
 
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
+    public String getDescription() { return description; }
 
-    public Integer getState() {
-        return state;
-    }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setState(Integer state) {
-        this.state = state;
-    }
+    public Integer getCapacity() { return capacity; }
+
+    public void setCapacity(Integer capacity) { this.capacity = capacity; }
+
+    public Integer getState() { return state; }
+
+    public void setState(Integer state) { this.state = state; }
 }
