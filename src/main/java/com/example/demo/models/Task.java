@@ -37,10 +37,6 @@ public class Task {
     private Emergency emergency;
 
     @ManyToOne
-    @JoinColumn(name="requirement_id")
-    private Requirement requirement;
-
-    @ManyToOne
     @JoinColumn
     private User user;
     /*

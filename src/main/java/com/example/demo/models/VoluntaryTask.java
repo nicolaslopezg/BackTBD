@@ -16,7 +16,7 @@ public class VoluntaryTask {
 
     @ManyToOne
     @JoinColumn
-    private Dimension dimension;
+    private VoluntaryTask dimension;
     /*
     @ManyToOne
     @JoinColumn
