@@ -1,6 +1,6 @@
-package com.example.demo.Models;
+package com.example.demo.models;
 
-import org.springframework.lang.NonNull;
+import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 
 @Entity
@@ -8,19 +8,24 @@ import javax.persistence.*;
 public class Emergency {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "type", unique = false)
     private String type;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "description", unique = false)
     private String description;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "capacity", unique =false)
     private Integer capacity;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "status", unique = false)
     private Integer status;
 
     public Long getId() {

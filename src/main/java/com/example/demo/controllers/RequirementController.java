@@ -1,8 +1,8 @@
-package com.example.demo.Controllers;
+package com.example.demo.controllers;
 
 
-import com.example.demo.Models.Requirement;
-import com.example.demo.Repositories.RequirementRepository;
+import com.example.demo.models.Requirement;
+import com.example.demo.repositories.RequirementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

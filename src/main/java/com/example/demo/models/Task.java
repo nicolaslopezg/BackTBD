@@ -1,4 +1,7 @@
-package com.example.demo.Models;
+package com.example.demo.models;
+
+import com.example.demo.Models.Requirement;
+import com.example.demo.Models.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,10 +35,6 @@ public class Task {
     @ManyToOne
     @JoinColumn
     private Emergency emergency;
-
-    @ManyToOne
-    @JoinColumn
-    private Requirement requirement;
 
     @ManyToOne
     @JoinColumn

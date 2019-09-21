@@ -1,13 +1,12 @@
-package com.example.demo.Controllers;
+package com.example.demo.controllers;
 
 
-import com.example.demo.Models.Equipment;
-import com.example.demo.Repositories.EquipmentRepository;
+import com.example.demo.models.Equipment;
+import com.example.demo.repositories.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @CrossOrigin(origins = "*")

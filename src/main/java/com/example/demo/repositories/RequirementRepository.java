@@ -1,6 +1,6 @@
-package com.example.demo.Repositories;
+package com.example.demo.repositories;
 
-import com.example.demo.Models.Requirement;
+import com.example.demo.models.Requirement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RequirementRepository extends JpaRepository<Requirement, Long> {

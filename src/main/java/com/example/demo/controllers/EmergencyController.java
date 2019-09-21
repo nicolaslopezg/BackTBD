@@ -1,8 +1,8 @@
-package com.example.demo.Controllers;
+package com.example.demo.controllers;
 
-import com.example.demo.Models.Task;
-import com.example.demo.Models.Emergency;
-import com.example.demo.Repositories.EmergencyRepository;
+import com.example.demo.models.Task;
+import com.example.demo.models.Emergency;
+import com.example.demo.repositories.EmergencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;

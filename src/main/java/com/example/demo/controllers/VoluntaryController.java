@@ -1,7 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.repositories.UserRepository;
-import com.example.demo.models.User;
+
+import com.example.demo.models.Voluntary;
+import com.example.demo.repositories.VoluntaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,29 +15,29 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/volunteers")
+public class VoluntaryController {
 
     @Autowired
-    UserRepository userRepository;
+    VoluntaryRepository voluntaryRepository;
 
     @GetMapping
     @ResponseBody
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<Voluntary> getAllVolunteers() {
+        return voluntaryRepository.findAll();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public String getNombreUserById(@PathVariable Long id) {
-        User user = userRepository.findUserByIdUser(id);
-        return user.getNombreUser();
+    public String getNombreVoluntaryById(@PathVariable Long id) {
+        Voluntary user = voluntaryRepository.findVoluntaryByIdVoluntary(id);
+        return user.getNombre();
     }
 
     @GetMapping(value = "/rut/{rut}")
     @ResponseBody
-    public User getUserByRut(@PathVariable Integer rut){
-        return userRepository.findUserByRut(rut);
+    public Voluntary getUserByRut(@PathVariable Integer rut){
+        return voluntaryRepository.findVoluntaryByRut(rut);
     }
 
     @PostMapping("/create")
@@ -46,13 +47,14 @@ public class UserController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, String> map = new HashMap<>();
 
-        User usuario = userRepository.findUserByRut(Integer.parseInt(jsonData.get("rut").toString()));
-        if(usuario == null) {
-            userRepository.save(new User(Integer.parseInt(jsonData.get("rut").toString()),
+        Voluntary vol = voluntaryRepository.findVoluntaryByRut(Integer.parseInt(jsonData.get("rut").toString()));
+        if(vol == null) {
+            voluntaryRepository.save(new Voluntary(Integer.parseInt(jsonData.get("rut").toString()),
                     jsonData.get("nombre").toString(),
                     jsonData.get("apellido").toString(),
                     jsonData.get("correo").toString(),
-                    formatter.parse(jsonData.get("fechaNacimiento").toString())));
+                    formatter.parse(jsonData.get("fechaNacimiento").toString()),
+                    Boolean.parseBoolean(jsonData.get("asignado").toString())));
             System.out.println(jsonData);
             map.put("status", "201");
             map.put("message", "OK");
@@ -61,37 +63,38 @@ public class UserController {
         }
         else {
             map.put("status", "401");
-            map.put("message", "User with this rut already exist.");
-            map.put("item", usuario.getNombreUser());
+            map.put("message", "Voluntary with this rut already exist.");
+            map.put("item", vol.getNombre());
             result.add(map);
             return result;
         }
     }
 
-    @PostMapping("/update/{rutUsuario}")
+    @PostMapping("/update/{rut}")
     @ResponseBody
-    public List<HashMap<String, String>> update(@PathVariable int rutUsuario, @RequestBody Map<String, Object> jsonData) throws ParseException {
+    public List<HashMap<String, String>> update(@PathVariable int rut, @RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        User usuario = userRepository.findUserByRut(rutUsuario);
+        Voluntary vol = voluntaryRepository.findVoluntaryByRut(rut);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if(usuario == null) {
+        if(vol == null) {
             map.put("status", "404");
-            map.put("message", "User does not exist!.");
+            map.put("message", "Voluntary does not exist!.");
             map.put("item", "");
             result.add(map);
             return result;
         }
         else {
-            usuario.setRut(Integer.parseInt(jsonData.get("rut").toString()));
-            usuario.setNombreUser(jsonData.get("nombre").toString());
-            usuario.setApellidoUser(jsonData.get("apellido").toString());
-            usuario.setCorreoUser(jsonData.get("correo").toString());
-            usuario.setFechaNacimiento(formatter.parse(jsonData.get("fechaNacimiento").toString()));
-            userRepository.save(usuario);
+            vol.setRut(Integer.parseInt(jsonData.get("rut").toString()));
+            vol.setNombre(jsonData.get("nombre").toString());
+            vol.setApellido(jsonData.get("apellido").toString());
+            vol.setCorreo(jsonData.get("correo").toString());
+            vol.setFechaNacimiento(formatter.parse(jsonData.get("fechaNacimiento").toString()));
+            vol.setAsignado(Boolean.parseBoolean(jsonData.get("asignado").toString()));
+            voluntaryRepository.save(vol);
             map.put("status", "200");
             map.put("message", "OK");
-            map.put("item", usuario.getNombreUser());
+            map.put("item", vol.getNombre());
             result.add(map);
             return result;
         }
@@ -103,19 +106,19 @@ public class UserController {
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        User usuario = userRepository.findUserByIdUser(id);
-        if(usuario == null) {
+        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(id);
+        if(vol == null) {
             map.put("status", "404");
-            map.put("message", "User does not exist!.");
+            map.put("message", "Voluntary does not exist!.");
             map.put("item", "");
             result.add(map);
             return result;
         }
         else {
-            String erasedUser = usuario.getNombreUser();
-            userRepository.deleteById(id);
+            String erasedUser = vol.getNombre();
+            voluntaryRepository.deleteById(id);
             map.put("status", "200");
-            map.put("message", "OK, user erased!.");
+            map.put("message", "OK, voluntary erased!.");
             map.put("item", erasedUser);
             result.add(map);
             return result;

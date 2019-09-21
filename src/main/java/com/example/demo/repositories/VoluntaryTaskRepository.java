@@ -1,11 +1,11 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.VoluntaryDimension;
+import com.example.demo.Models.VoluntaryTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VoluntaryDimensionRepository extends JpaRepository<VoluntaryDimension, Long>{
+public interface VoluntaryTaskRepository extends JpaRepository<VoluntaryTask, Long>{
     // Aún no funcionan.
-    VoluntaryDimension findVDById(Long id);
+    VoluntaryTask findVDById(Long id);
 }

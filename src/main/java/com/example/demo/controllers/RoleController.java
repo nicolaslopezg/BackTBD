@@ -1,8 +1,8 @@
-package com.example.demo.Controllers;
+package com.example.demo.controllers;
 
 
-import com.example.demo.Models.Role;
-import com.example.demo.Repositories.RoleRepository;
+import com.example.demo.models.Role;
+import com.example.demo.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

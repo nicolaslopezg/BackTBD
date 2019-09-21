@@ -1,4 +1,4 @@
-package com.example.demo.Models;
+package com.example.demo.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -74,7 +74,7 @@ public class User implements Serializable {
         return apellidoUser;
     }
 
-    public void setApellidoUser(String ubicacionUser) {
+    public void setApellidoUser(String apellidoUser) {
         this.apellidoUser = apellidoUser;
     }
 

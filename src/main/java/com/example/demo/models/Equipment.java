@@ -1,4 +1,4 @@
-package com.example.demo.Models;
+package com.example.demo.models;
 
 
 import javax.persistence.*;
@@ -67,7 +67,7 @@ public class Equipment implements Serializable {
         return tipo;
     }
 
-    public void setTipo(int rut) {
+    public void setTipo(int tipo) {
         this.tipo = tipo;
     }
 
