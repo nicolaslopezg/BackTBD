@@ -1,8 +1,7 @@
 package com.example.demo.Models;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.lang.NonNull;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "districts")
@@ -14,7 +13,8 @@ public class District {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "`name`", unique = true)
     private String name;
 
     @ManyToOne

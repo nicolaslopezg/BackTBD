@@ -1,7 +1,7 @@
 package com.example.demo.Models;
 
-import org.springframework.lang.NonNull;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tasks")
@@ -13,16 +13,20 @@ public class Task {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "`type`", unique = true)
     private String type;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "description", unique = true)
     private String description;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "`capacity`", unique = true)
     private Integer capacity;
 
-    @NonNull
+    @NotNull
+    @Column(nullable = false, name = "`state`", unique = true)
     private Integer state;
 
     public Long getId() {
