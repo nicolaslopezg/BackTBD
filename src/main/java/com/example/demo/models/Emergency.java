@@ -43,7 +43,7 @@ public class Emergency {
         return capacity;
     }
 
-    public void setCapacity(Integer rut) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
