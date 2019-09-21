@@ -19,11 +19,13 @@ public class Requirement implements Serializable {
     @Column(nullable = false, name = "`descripcion`")
     private String descripcion;
 
+    @ManyToOne
+    @JoinColumn
+    private Task task;
 
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "idCliente")
-    //@JsonIgnore
-    //private List<Reserva> reservas;
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
 
     public Requirement() {
 

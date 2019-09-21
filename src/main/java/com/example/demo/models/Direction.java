@@ -1,7 +1,7 @@
 package com.example.demo.models;
 
 import javax.validation.constraints.NotNull;
-import com.example.demo.Models.District;
+import com.example.demo.models.District;
 import javax.persistence.*;
 
 @Entity
@@ -28,9 +28,9 @@ public class Direction {
     @JoinColumn
     private District district;
 
-    /*@ManyToOne
-    @JoinColumn
-    private Voluntary voluntary;*/
+    @ManyToOne
+    @JoinColumn (name = "voluntary_id")
+    private Voluntary voluntary;
 
     public Long getId() {
         return id;

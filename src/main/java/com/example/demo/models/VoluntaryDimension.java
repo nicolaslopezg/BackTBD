@@ -24,10 +24,10 @@ public class VoluntaryDimension {
     @ManyToOne
     @JoinColumn
     private Dimension dimension;
-    /*
+
     @ManyToOne
-    @JoinColumn
-    private Voluntary voluntary;*/
+    @JoinColumn(name = "voluntary_id")
+    private Voluntary voluntary;
 
     // Faltan las llaves foraneas.
 

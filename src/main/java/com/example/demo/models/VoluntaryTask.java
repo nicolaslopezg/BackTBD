@@ -1,4 +1,4 @@
-package com.example.demo.Models;
+package com.example.demo.models;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.lang.NonNull;
@@ -15,12 +15,12 @@ public class VoluntaryTask {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
-    private VoluntaryTask dimension;
-    /*
+    @JoinColumn(name = "task_id")
+    private Task task;
+
     @ManyToOne
-    @JoinColumn
-    private Voluntary voluntary;*/
+    @JoinColumn(name = "voluntary_id")
+    private Voluntary voluntary;
 
     // Faltan las llaves foraneas.
 

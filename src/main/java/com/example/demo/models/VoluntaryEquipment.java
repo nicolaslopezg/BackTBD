@@ -15,20 +15,13 @@ public class VoluntaryEquipment implements Serializable {
     @Column(name = "idVoluntaryEquipment")
     private Long idVoluntaryEquipment;
 
-
-    @ManyToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "idVoluntary")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Voluntary voluntary;
-
-    @ManyToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEquipment")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
-    public VoluntaryEquipment() {}
+    @ManyToOne
+    @JoinColumn(name = "voluntary_id")
+    private Voluntary voluntary;
 
     public VoluntaryEquipment( Voluntary vol, Equipment equip) {
         this.voluntary = vol;

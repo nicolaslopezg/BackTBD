@@ -1,7 +1,7 @@
 package com.example.demo.models;
 
-import com.example.demo.Models.Requirement;
-import com.example.demo.Models.User;
+import com.example.demo.models.Requirement;
+import com.example.demo.models.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,12 +37,8 @@ public class Task {
     private Emergency emergency;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
-    /*
-    @ManyToOne
-    @JoinColumn
-    private Voluntary voluntary;*/
 
     public Long getId() { return id; }
 

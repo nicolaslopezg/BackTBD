@@ -20,11 +20,9 @@ public class Role implements Serializable {
     @Column(nullable = false, name = "`descripcion`")
     private String descripcion;
 
-
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "idCliente")
-    //@JsonIgnore
-    //private List<Reserva> reservas;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Role() {
 
