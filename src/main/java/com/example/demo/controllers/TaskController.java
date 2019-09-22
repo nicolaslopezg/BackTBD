@@ -90,4 +90,30 @@ public class TaskController {
     // Falta que mande el mensaje de exito.
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable Long id) { repository.deleteById(id); }
+
+    @PostMapping("/tasks/finish")
+    @ResponseBody
+    public List<HashMap<String, String>> finishTask(@RequestBody Map<String, Object> jsonData) {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        Long idTask = Long.parseLong(jsonData.get("idTask").toString());
+        Task task = repository.findTaskById(idTask);
+        if(task == null) {
+            map.put("status", "404");
+            map.put("message", "Task does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+        else {
+            task.setState(0);
+            repository.save(task);
+            map.put("status", "200");
+            map.put("message", "OK");
+            map.put("item", task.getDescription());
+            result.add(map);
+            return result;
+        }
+    }
+
 }
