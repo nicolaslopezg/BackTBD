@@ -13,15 +13,7 @@ public class VoluntaryDimension {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @NotNull
-    @Column(nullable = false, name = "`name`", unique = false)
-    private String name;
 
-    @NotNull
-    @Column(nullable = false, name = "`quantity`", unique = false)
-    private Integer quantity;
-
-    @NotNull
     @ManyToOne
     @JoinColumn
     private Dimension dimension;
@@ -30,7 +22,14 @@ public class VoluntaryDimension {
     @JoinColumn(name = "voluntary_id")
     private Voluntary voluntary;
 
-    // Faltan las llaves foraneas.
+    public VoluntaryDimension() {
+
+    }
+
+    public VoluntaryDimension( Dimension dimension, Voluntary voluntary) {
+        this.dimension = dimension;
+        this.voluntary = voluntary;
+    }
 
     public Long getId() {
         return id;
@@ -40,19 +39,19 @@ public class VoluntaryDimension {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Dimension getDimension() {
+        return dimension;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDimension(Dimension dimension) {
+        this.dimension = dimension;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Voluntary getVoluntary() {
+        return voluntary;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setVoluntary(Voluntary voluntary) {
+        this.voluntary = voluntary;
     }
 }

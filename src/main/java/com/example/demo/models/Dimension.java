@@ -17,6 +17,17 @@ public class Dimension {
     @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
+
+
+    public Dimension() {
+
+    }
+
+    public Dimension( String name) {
+        this.name = name;
+    }
+
+
     public Long getId() {
         return id;
     }
@@ -32,4 +43,5 @@ public class Dimension {
     public void setName(String type) {
         this.name = name;
     }
+
 }
