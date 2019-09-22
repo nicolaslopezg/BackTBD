@@ -22,11 +22,7 @@ public class VoluntaryTask {
     @JoinColumn(name = "voluntary_id")
     private Voluntary voluntary;
 
-    // Faltan las llaves foraneas.
-
-    public VoluntaryTask() {
-
-    }
+    public VoluntaryTask(){ }
 
     public VoluntaryTask( Task task, Voluntary voluntary) {
         this.task = task;

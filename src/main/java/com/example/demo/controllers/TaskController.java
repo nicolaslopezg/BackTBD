@@ -32,6 +32,13 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     Optional<Task> getTaskId(@PathVariable Long id) { return repository.findById(id); }
 
+    @GetMapping("/taskByEmergency/{id}")
+    @ResponseBody
+    public List<Task> getTaskByEmergency(@PathVariable Long id) {
+        Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(id);
+        return repository.findTasksByEmergency(emergency);
+    }
+
     @PostMapping("/tasks/create")
     @ResponseBody
     public List<HashMap<String, String>> insertTask(@RequestBody Map<String, Object> jsonData) {
@@ -44,8 +51,6 @@ public class TaskController {
         if(user != null){
             emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
             if(emergency != null){
-
-
                 repository.save(new Task(jsonData.get("type").toString(),
                         jsonData.get("description").toString(),
                         Integer.parseInt(jsonData.get("capacity").toString()),

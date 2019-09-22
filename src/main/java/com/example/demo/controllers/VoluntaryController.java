@@ -1,8 +1,11 @@
 package com.example.demo.controllers;
 
-
+import com.example.demo.models.Task;
 import com.example.demo.models.Voluntary;
+import com.example.demo.models.VoluntaryTask;
+import com.example.demo.repositories.TaskRepository;
 import com.example.demo.repositories.VoluntaryRepository;
+import com.example.demo.repositories.VoluntaryTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +23,14 @@ public class VoluntaryController {
 
     @Autowired
     VoluntaryRepository voluntaryRepository;
+    @Autowired
+    VoluntaryTaskRepository voluntaryTaskRepository;
+    @Autowired
+    TaskRepository taskRepository;
 
     @GetMapping
     @ResponseBody
-    public List<Voluntary> getAllVolunteers() {
-        return voluntaryRepository.findAll();
-    }
+    public List<Voluntary> getAllVolunteers() { return voluntaryRepository.findAll(); }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
@@ -36,8 +41,19 @@ public class VoluntaryController {
 
     @GetMapping(value = "/rut/{rut}")
     @ResponseBody
-    public Voluntary getUserByRut(@PathVariable Integer rut){
-        return voluntaryRepository.findVoluntaryByRut(rut);
+    public Voluntary getUserByRut(@PathVariable Integer rut) { return voluntaryRepository.findVoluntaryByRut(rut); }
+
+
+    @GetMapping("/byTask/{id}")
+    @ResponseBody
+    public List<Voluntary> getVoluntaryByTask(@PathVariable Long id){
+        Task task = taskRepository.findTasksById(id);
+        List<Voluntary> result = new ArrayList<Voluntary>();
+        List<VoluntaryTask> voluntaryTask = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
+        for (int i = 0; i < voluntaryTask.size(); i++){
+            result.add(voluntaryTask.get(i).getVoluntary());
+        }
+        return result;
     }
 
     @PostMapping("/create")
