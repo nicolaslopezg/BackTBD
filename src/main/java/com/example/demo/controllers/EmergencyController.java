@@ -34,7 +34,7 @@ public class EmergencyController {
         Optional<Emergency> studentOptional = repository.findById(id);
         if (!studentOptional.isPresent())
             return ResponseEntity.notFound().build();
-        emergency.setId(id);
+        emergency.setIdEmergency(id);
         repository.save(emergency);
         return ResponseEntity.noContent().build();
     }

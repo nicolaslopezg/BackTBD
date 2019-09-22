@@ -32,17 +32,23 @@ public class Task {
     @Column(nullable = false, name = "`state`", unique = false)
     private Integer state;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "emergency_id")
     private Emergency emergency;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Task( Emergency emergency, User user) {
+    public Task() {
+
+    }
+
+    public Task( String type, String description, Integer capacity, Integer state, Emergency emergency, User user) {
+        this.type = type;
+        this.description = description;
+        this.capacity = capacity;
+        this.state = state;
         this.emergency = emergency;
         this.user = user;
     }
@@ -66,4 +72,12 @@ public class Task {
     public Integer getState() { return state; }
 
     public void setState(Integer state) { this.state = state; }
+
+    public Emergency getEmergency() { return emergency; }
+
+    public void setEmergency(Emergency emergency) { this.emergency = emergency; }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
 }

@@ -21,7 +21,9 @@ public class TaskController {
 
     @Autowired
     TaskRepository repository;
+    @Autowired
     EmergencyRepository emergencyRepository;
+    @Autowired
     UserRepository userRepository;
 
     @GetMapping("/tasks")
@@ -30,17 +32,25 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     Optional<Task> getTaskId(@PathVariable Long id) { return repository.findById(id); }
 
-    @PostMapping("/tasks")
+    @PostMapping("/tasks/create")
+    @ResponseBody
     public List<HashMap<String, String>> insertTask(@RequestBody Map<String, Object> jsonData) {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Long idEmergency = Long.parseLong(jsonData.get("emergency").toString());
         Long idUser = Long.parseLong(jsonData.get("user").toString());
+        Long idEmergency = Long.parseLong(jsonData.get("emergency").toString());
         User user = userRepository.findUserByIdUser(idUser);
-        Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
+        Emergency emergency;
         if(user != null){
+            emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
             if(emergency != null){
-                repository.save(new Task(emergency,user));
+
+
+                repository.save(new Task(jsonData.get("type").toString(),
+                        jsonData.get("description").toString(),
+                        Integer.parseInt(jsonData.get("capacity").toString()),
+                        Integer.parseInt(jsonData.get("state").toString()),
+                        emergency,user));
                 map.put("status", "201");
                 map.put("message", "Task added");
                 result.add(map);

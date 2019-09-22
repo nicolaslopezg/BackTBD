@@ -21,19 +21,30 @@ public class Emergency {
     private String description;
 
     @NotNull
-    @Column(nullable = false, name = "capacity", unique =false)
+    @Column(nullable = false, name = "capacity", unique = false)
     private Integer capacity;
 
     @NotNull
     @Column(nullable = false, name = "status", unique = false)
     private Integer status;
 
-    public Long getId() {
+    public Emergency() {
+
+    }
+
+    public Emergency( String type, String description, Integer capacity, Integer status) {
+        this.type = type;
+        this.description = description;
+        this.capacity = capacity;
+        this.status = status;
+    }
+
+    public Long getIdEmergency() {
         return idEmergency;
     }
 
-    public void setId(Long id) {
-        this.idEmergency = id;
+    public void setIdEmergency(Long idEmergency) {
+        this.idEmergency = idEmergency;
     }
 
     public String getType() {
