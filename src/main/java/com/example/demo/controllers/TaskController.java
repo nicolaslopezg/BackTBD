@@ -91,9 +91,9 @@ public class TaskController {
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable Long id) { repository.deleteById(id); }
 
-    @PostMapping("/tasks/finish")
+    @PostMapping("/tasks/end")
     @ResponseBody
-    public List<HashMap<String, String>> finishTask(@RequestBody Map<String, Object> jsonData) {
+    public List<HashMap<String, String>> endTask(@RequestBody Map<String, Object> jsonData) {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Long idTask = Long.parseLong(jsonData.get("idTask").toString());
@@ -106,7 +106,14 @@ public class TaskController {
             return result;
         }
         else {
-            task.setState(0);
+            if (task.getState()!=1){
+                map.put("status", "404");
+                map.put("message", "Task does not finish!.");
+                map.put("item", "");
+                result.add(map);
+                return result;
+            }
+            task.setState(2);
             repository.save(task);
             map.put("status", "200");
             map.put("message", "OK");

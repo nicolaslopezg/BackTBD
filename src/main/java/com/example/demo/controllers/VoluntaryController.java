@@ -140,4 +140,190 @@ public class VoluntaryController {
             return result;
         }
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/acceptTask")
+    @ResponseBody
+    public List<HashMap<String, String>> acceptTask(@RequestBody Map<String, Object> jsonData) throws ParseException {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        int rut = Integer.parseInt(jsonData.get("rut").toString());
+        Voluntary vol = voluntaryRepository.findVoluntaryByRut(rut);
+        if (vol == null) {
+            map.put("status", "404");
+            map.put("message", "Voluntary does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        } else {
+            if (vol.getAsignado()== true){
+                map.put("status", "404");
+                map.put("message", "Voluntary already with task!.");
+                map.put("item", "");
+                result.add(map);
+                return result;
+            }
+            Long idTask = Long.parseLong(jsonData.get("idTask").toString());
+            Task task = taskRepository.findTaskById(idTask);
+            List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
+            for (VoluntaryTask asignacion: asignaciones) {
+                if (asignacion.getVoluntary().equals(vol)){
+                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                        map.put("status", "404");
+                        map.put("message", "Task  already rejected!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
+                        map.put("status", "404");
+                        map.put("message", "Task  already accepted!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
+                        vol.setAsignado(true);
+                        voluntaryRepository.save(vol);
+                        asignacion.setEstado(1);
+                        voluntaryTaskRepository.save(asignacion);
+                        System.out.println(jsonData);
+                        map.put("status", "201");
+                        map.put("message", "OK, Task accepted!");
+                        result.add(map);
+                        return result;
+                    }
+                }
+            }
+            map.put("status", "404");
+            map.put("message", "Task  not found for this user!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/rejectTask")
+    @ResponseBody
+    public List<HashMap<String, String>> rejectTask(@RequestBody Map<String, Object> jsonData) throws ParseException {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        int rut = Integer.parseInt(jsonData.get("rut").toString());
+        Voluntary vol = voluntaryRepository.findVoluntaryByRut(rut);
+        if (vol == null) {
+            map.put("status", "404");
+            map.put("message", "Voluntary does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        } else {
+            if (vol.getAsignado()== true){
+                map.put("status", "404");
+                map.put("message", "Voluntary already with task!.");
+                map.put("item", "");
+                result.add(map);
+                return result;
+            }
+            Long idTask = Long.parseLong(jsonData.get("idTask").toString());
+            Task task = taskRepository.findTaskById(idTask);
+            List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
+            for (VoluntaryTask asignacion: asignaciones) {
+                if (asignacion.getVoluntary().equals(vol)){
+                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                        map.put("status", "404");
+                        map.put("message", "Task  already rejected!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
+                        map.put("status", "404");
+                        map.put("message", "Task  already accepted!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
+                        asignacion.setEstado(2);
+                        voluntaryTaskRepository.save(asignacion);
+                        System.out.println(jsonData);
+                        map.put("status", "201");
+                        map.put("message", "OK, Task rejected!");
+                        result.add(map);
+                        return result;
+                    }
+                }
+            }
+            map.put("status", "404");
+            map.put("message", "Task  not found for this user!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/finishTask")
+    @ResponseBody
+    public List<HashMap<String, String>> finishTask(@RequestBody Map<String, Object> jsonData) throws ParseException {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        int rut = Integer.parseInt(jsonData.get("rut").toString());
+        Voluntary vol = voluntaryRepository.findVoluntaryByRut(rut);
+        if (vol == null) {
+            map.put("status", "404");
+            map.put("message", "Voluntary does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        } else {
+            if (vol.getAsignado()== false){
+                map.put("status", "404");
+                map.put("message", "Voluntary doesn't have a task!.");
+                map.put("item", "");
+                result.add(map);
+                return result;
+            }
+            Long idTask = Long.parseLong(jsonData.get("idTask").toString());
+            Task task = taskRepository.findTaskById(idTask);
+            List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
+            for (VoluntaryTask asignacion: asignaciones) {
+                if (asignacion.getVoluntary().equals(vol)){
+                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                        map.put("status", "404");
+                        map.put("message", "Task  already rejected!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
+                        asignacion.setEstado(3);
+                        voluntaryTaskRepository.save(asignacion);
+                        vol.setAsignado(false);
+                        voluntaryRepository.save(vol);
+                        task.setState(1);
+                        taskRepository.save(task);
+                        System.out.println(jsonData);
+                        map.put("status", "201");
+                        map.put("message", "OK, Task finished!!");
+                        result.add(map);
+                        return result;
+                    }
+                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
+                        map.put("status", "404");
+                        map.put("message", "Task  not accepted yet!!.");
+                        map.put("item", "");
+                        result.add(map);
+                        return result;
+                    }
+                }
+            }
+            map.put("status", "404");
+            map.put("message", "Task  not found for this user!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+    }
 }
