@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long>{
     // Funcionando
     Optional<Task> findById(Long id);
+    Task findTaskById(Long id);
     void deleteById(Long id);
 }
