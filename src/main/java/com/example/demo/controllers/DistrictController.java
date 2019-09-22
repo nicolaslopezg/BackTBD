@@ -22,10 +22,10 @@ public class DistrictController {
 
     @GetMapping("/districts/{id}")
     @ResponseBody
-    public District getCity(@PathVariable Long id) { return districtRepository.findCityById(id); }
+    public District getCity(@PathVariable Long id) { return districtRepository.findDistrictById(id); }
 
     @GetMapping("/districtByName/{name}")
     @ResponseBody
-    public District getCityByName(@PathVariable String name) { return districtRepository.findCityByName(name); }
+    public District getCityByName(@PathVariable String name) { return districtRepository.findDistrictByName(name); }
 
 }
