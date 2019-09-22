@@ -17,28 +17,35 @@ public class Task {
     private Long id;
 
     @NotNull
-    @Column(nullable = false, name = "`type`", unique = true)
+    @Column(nullable = false, name = "`type`", unique = false)
     private String type;
 
     @NotNull
-    @Column(nullable = false, name = "description", unique = true)
+    @Column(nullable = false, name = "description", unique = false)
     private String description;
 
     @NotNull
-    @Column(nullable = false, name = "`capacity`", unique = true)
+    @Column(nullable = false, name = "`capacity`", unique = false)
     private Integer capacity;
 
     @NotNull
-    @Column(nullable = false, name = "`state`", unique = true)
+    @Column(nullable = false, name = "`state`", unique = false)
     private Integer state;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "emergency_id")
     private Emergency emergency;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Task( Emergency emergency, User user) {
+        this.emergency = emergency;
+        this.user = user;
+    }
 
     public Long getId() { return id; }
 

@@ -14,7 +14,7 @@ public class Dimension {
     private Long id;
 
     @NotNull
-    @Column(nullable = false, name = "`name`", unique = true)
+    @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
     public Long getId() {

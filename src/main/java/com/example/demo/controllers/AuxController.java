@@ -58,7 +58,7 @@ public class AuxController {
 
     public static void readCSV() {
         int i = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("./src/main/java/com/example/demo/Information/TBD VOLUNTARIOS.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./src/main/java/com/example/demo/information/TBD VOLUNTARIOS.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if( i != 0){

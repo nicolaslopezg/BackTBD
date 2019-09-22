@@ -9,8 +9,8 @@ public class Emergency {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    @Column(name = "idEmergency", updatable = false, nullable = false)
+    private Long idEmergency;
 
     @NotNull
     @Column(nullable = false, name = "type", unique = false)
@@ -29,11 +29,11 @@ public class Emergency {
     private Integer status;
 
     public Long getId() {
-        return id;
+        return idEmergency;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.idEmergency = id;
     }
 
     public String getType() {

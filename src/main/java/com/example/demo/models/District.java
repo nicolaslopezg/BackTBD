@@ -14,9 +14,10 @@ public class District {
     private Long id;
 
     @NotNull
-    @Column(nullable = false, name = "`name`", unique = true)
+    @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
+    @NotNull
     @ManyToOne
     @JoinColumn
     private City city;

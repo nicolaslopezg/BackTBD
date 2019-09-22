@@ -14,13 +14,14 @@ public class VoluntaryDimension {
     private Long id;
 
     @NotNull
-    @Column(nullable = false, name = "`name`", unique = true)
+    @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
     @NotNull
-    @Column(nullable = false, name = "`quantity`", unique = true)
+    @Column(nullable = false, name = "`quantity`", unique = false)
     private Integer quantity;
 
+    @NotNull
     @ManyToOne
     @JoinColumn
     private Dimension dimension;

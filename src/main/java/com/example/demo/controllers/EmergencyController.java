@@ -29,22 +29,17 @@ public class EmergencyController {
     Emergency insertEmergency(@RequestBody Emergency newEmergency) { return repository.save(newEmergency); }
 
     @PutMapping("/emergencies/{id}")
-    public ResponseEntity<Object> updateStudent(@RequestBody Emergency student, @PathVariable long id) {
+    public ResponseEntity<Object> updateStudent(@RequestBody Emergency emergency, @PathVariable long id) {
 
         Optional<Emergency> studentOptional = repository.findById(id);
         if (!studentOptional.isPresent())
             return ResponseEntity.notFound().build();
-        student.setId(id);
-        repository.save(student);
+        emergency.setId(id);
+        repository.save(emergency);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/emergencies/{id}")
     public void deleteEmergency(@PathVariable Long id) { repository.deleteById(id); }
 
-    @GetMapping("/taskByEmergency")
-    public void getTaskByEmergencies(@PathVariable Long id) {
-        // Tengo la ID de la emergencia.
-        // Tengo en un List<Task> a todas las tareas que tienen por llave foranea a la id de emergencia.
-    }
 }
