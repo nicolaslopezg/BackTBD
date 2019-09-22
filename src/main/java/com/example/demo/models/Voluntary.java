@@ -4,6 +4,8 @@ package com.example.demo.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -33,12 +35,26 @@ public class Voluntary implements Serializable {
     @Column(nullable = false, name = "`asignado`")
     private Boolean asignado;
 
+    @Column(name = "`sexo`")
+    private String sexo;
+
     //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@JoinColumn(name = "idCliente")
     //@JsonIgnore
     //private List<Reserva> reservas;
 
-    public Voluntary() {
+    public Voluntary() { }
+
+    //Constructor para voluntarios leidos desde el csv.
+    public Voluntary(String nombre, String apellido, String correo, String sexo, int rut) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        this.rut = rut;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.fechaNacimiento = formatter.parse("1998-03-11");
+        this.asignado = false;
+        this.sexo = sexo;
 
     }
 

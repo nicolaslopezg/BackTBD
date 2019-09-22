@@ -13,9 +13,11 @@ public class VoluntaryDimension {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "dimension_id")
     private Dimension dimension;
 
     @ManyToOne
@@ -26,9 +28,10 @@ public class VoluntaryDimension {
 
     }
 
-    public VoluntaryDimension( Dimension dimension, Voluntary voluntary) {
+    public VoluntaryDimension( Dimension dimension, Voluntary voluntary, int quantity) {
         this.dimension = dimension;
         this.voluntary = voluntary;
+        this.quantity = quantity;
     }
 
     public Long getId() {
