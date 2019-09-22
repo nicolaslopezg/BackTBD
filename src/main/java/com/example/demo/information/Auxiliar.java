@@ -127,6 +127,7 @@ public class Auxiliar {
         return result;
     }
 
+
     @EventListener
     public void appReady(ApplicationReadyEvent event) throws ParseException {
 
@@ -152,7 +153,7 @@ public class Auxiliar {
                 voluntaryDimensionRepository.save(new VoluntaryDimension(dimensionRepository.findDimensionByName(dimensions.get(i).get(j)),voluntaryRepository.findVoluntaryByIdVoluntary(Long.valueOf(i+1)),Integer.valueOf(dimensions.get(i).get(j+1))));
             }
         }
-
     }
+
 
 }

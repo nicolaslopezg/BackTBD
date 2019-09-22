@@ -1,11 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Task;
-import com.example.demo.models.Voluntary;
-import com.example.demo.models.VoluntaryTask;
-import com.example.demo.repositories.TaskRepository;
-import com.example.demo.repositories.VoluntaryRepository;
-import com.example.demo.repositories.VoluntaryTaskRepository;
+import com.example.demo.models.*;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +23,10 @@ public class VoluntaryController {
     VoluntaryTaskRepository voluntaryTaskRepository;
     @Autowired
     TaskRepository taskRepository;
+    @Autowired
+    DimensionRepository dimensionRepository;
+    @Autowired
+    VoluntaryDimensionRepository voluntaryDimensionRepository;
 
     @GetMapping
     @ResponseBody
@@ -327,4 +327,16 @@ public class VoluntaryController {
         }
     }
 
+
+    @GetMapping("/topVolunteers/{name}")
+    @ResponseBody
+    public List<VoluntaryDimension> getTopVoluntaries(@PathVariable String name){
+        List<Voluntary> result = new ArrayList<Voluntary>();
+        // Obtengo la Dimension.
+        Dimension dimension = dimensionRepository.findDimensionByName(name);
+        // De la tabla Voluntary-Dimension, obtengo sólo los campos que tienen la Dimension consultada.
+        List<VoluntaryDimension> voluntaryDimensions = voluntaryDimensionRepository.findVoluntaryDimensionByDimensionOrderByQuantityDesc(dimension);
+
+        return voluntaryDimensions;
+    }
 }
