@@ -17,7 +17,7 @@ public class CityController {
 
     @GetMapping("/cities")
     @ResponseBody
-    public List<City> getAllRoles() {
+    public List<City> getAllCities() {
         return cityRepository.findAll();
     }
 
