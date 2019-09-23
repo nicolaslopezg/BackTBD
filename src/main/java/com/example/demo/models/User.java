@@ -2,6 +2,8 @@ package com.example.demo.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 //kill -9 $(lsof -t -i:8080)
@@ -35,6 +37,17 @@ public class User implements Serializable {
     //private List<Reserva> reservas;
 
     public User() {
+
+    }
+
+    //Constructor para voluntarios leidos desde el csv.
+    public User(int rut, String nombreUser, String apellidoUser, String correoUser, SimpleDateFormat formatter) throws ParseException {
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        this.rut = rut;
+        this.nombreUser = nombreUser;
+        this.apellidoUser = apellidoUser;
+        this.correoUser = correoUser;
+        this.fechaNacimiento = formatter.parse("1998-03-11");
 
     }
 

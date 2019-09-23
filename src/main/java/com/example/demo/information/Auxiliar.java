@@ -2,6 +2,8 @@ package com.example.demo.information;
 
 import com.example.demo.models.*;
 import com.example.demo.repositories.DimensionRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.DistrictRepository;
 import com.example.demo.repositories.VoluntaryDimensionRepository;
 import com.example.demo.repositories.VoluntaryRepository;
@@ -15,7 +17,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -31,6 +35,10 @@ public class Auxiliar {
     private CityRepository cityRepository;
     @Autowired
     private DistrictRepository districtRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public  String clearString(String type,String line){
         String stringWLK;
@@ -208,5 +216,30 @@ public class Auxiliar {
         districtRepository.save(new District(cityRepository.findCityByName("Aysen del General Carlos Ibañez del Campo"),"Coyhaique"));
         districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"San Antonio"));
         districtRepository.save(new District(cityRepository.findCityByName("Maule"),"Linares"));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        // Se guardan los usuarios
+        userRepository.save(new User(197893478,"Carlos","Faundes","carlosfaundes@gmail.com",formatter));
+        userRepository.save(new User(191234568,"Nicolas","Lopez","nicolaslopez@gmail.com",formatter));
+        userRepository.save(new User(187531378,"Jorge","Ayala","jorgeayala@gmail.com",formatter));
+        userRepository.save(new User(236763478,"Javier","Crackceres","javocrack@gmail.com",formatter));
+        userRepository.save(new User(194576478,"Fabian","Fardo","fabianfardo@gmail.com",formatter));
+        userRepository.save(new User(346653478,"Matias","Fernandez","maticrack14@gmail.com",formatter));
+        userRepository.save(new User(191234348,"Esteban","Paredes","estebanparedes@gmail.com",formatter));
+        userRepository.save(new User(191324378,"Humberto","Suazo","humbertosuazo@gmail.com",formatter));
+        userRepository.save(new User(175467678,"Jorge","Valdivia","magovaldivia@gmail.com",formatter));
+        userRepository.save(new User(196756578,"Claudio","Bravo","claudiobravo@gmail.com",formatter));
+
+        //Se guardan los roles
+        roleRepository.save(new Role(1,"Todos los permisos",userRepository.findUserByRut(197893478)));
+        roleRepository.save(new Role(1,"Todos los permisos",userRepository.findUserByRut(191234568)));
+        roleRepository.save(new Role(1,"Todos los permisos",userRepository.findUserByRut(187531378)));
+        roleRepository.save(new Role(1,"Todos los permisos",userRepository.findUserByRut(236763478)));
+        roleRepository.save(new Role(1,"Todos los permisos",userRepository.findUserByRut(194576478)));
+        roleRepository.save(new Role(2,"Permisos de coordinador",userRepository.findUserByRut(346653478)));
+        roleRepository.save(new Role(2,"Permisos de coordinador",userRepository.findUserByRut(191234348)));
+        roleRepository.save(new Role(2,"Permisos de coordinador",userRepository.findUserByRut(191324378)));
+        roleRepository.save(new Role(2,"Permisos de coordinador",userRepository.findUserByRut(175467678)));
+        roleRepository.save(new Role(2,"Permisos de coordinador",userRepository.findUserByRut(196756578)));
     }
 }

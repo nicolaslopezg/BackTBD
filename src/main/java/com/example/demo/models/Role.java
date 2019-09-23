@@ -14,7 +14,7 @@ public class Role implements Serializable {
     @Column(name = "idUser")
     private Long idRole;
 
-    @Column(nullable = false, name = "`tipo`", unique = true)
+    @Column(nullable = false, name = "`tipo`")
     private int tipo;
 
     @Column(nullable = false, name = "`descripcion`")
@@ -28,7 +28,13 @@ public class Role implements Serializable {
 
     }
 
-    public Role( int tipo, String descripcion) {
+    public Role( int tipo, String descripcion, User user) {
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.user = user;
+    }
+
+    public Role(int tipo, String descripcion) {
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
