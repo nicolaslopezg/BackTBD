@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Direction;
 import com.example.demo.models.Task;
 import com.example.demo.models.Emergency;
 import com.example.demo.models.User;
+import com.example.demo.repositories.DirectionRepository;
 import com.example.demo.repositories.EmergencyRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class EmergencyController {
     EmergencyRepository repository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    DirectionRepository directionRepository;
 
     @GetMapping("/emergencies")
     public List<Emergency> getAll(){return repository.findAll(); }
@@ -65,6 +69,11 @@ public class EmergencyController {
     }
 
     @DeleteMapping("/emergencies/{id}")
-    public void deleteEmergency(@PathVariable Long id) { repository.deleteById(id); }
+    public void deleteEmergency(@PathVariable Long id) {
+        Emergency emergency = repository.findEmergencyByIdEmergency(id);
+        Direction direction = directionRepository.findDirectionByEmergency(emergency);
+        directionRepository.deleteById(direction.getId());
+        repository.deleteById(id);
+    }
 
 }
