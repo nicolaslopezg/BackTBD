@@ -30,26 +30,27 @@ public class EmergencyController {
 
     @PostMapping("/emergencies/create")
     @ResponseBody
-    public List<HashMap<String, String>> insertEmergency(@RequestBody Map<String, Object> jsonData) {
+    public Emergency insertEmergency(@RequestBody Map<String, Object> jsonData) {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Long idUser = Long.parseLong(jsonData.get("user").toString());
         User user = userRepository.findUserByIdUser(idUser);
         if(user != null){
-            repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
-                    Integer.valueOf(jsonData.get("capacity").toString()),
-                    Integer.valueOf(jsonData.get("status").toString()), user));
             map.put("status", "201");
             map.put("message", "Emergency added");
             result.add(map);
-            return result;
+            return repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
+                    Integer.valueOf(jsonData.get("capacity").toString()),
+                    Integer.valueOf(jsonData.get("status").toString()), user));
             }
         else {
-            map.put("status", "401");
-            map.put("message", "User does not exist!.");
-            result.add(map);
-            return result;
+            repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
+                    Integer.valueOf(jsonData.get("capacity").toString()),
+                    Integer.valueOf(jsonData.get("status").toString()),user));
         }
+        return repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
+                Integer.valueOf(jsonData.get("capacity").toString()),
+                Integer.valueOf(jsonData.get("status").toString()), user));
     }
 
     @PutMapping("/emergencies/{id}")

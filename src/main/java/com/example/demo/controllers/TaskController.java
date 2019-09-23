@@ -41,36 +41,42 @@ public class TaskController {
 
     @PostMapping("/tasks/create")
     @ResponseBody
-    public List<HashMap<String, String>> insertTask(@RequestBody Map<String, Object> jsonData) {
+    public Task insertTask(@RequestBody Map<String, Object> jsonData) {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Long idUser = Long.parseLong(jsonData.get("user").toString());
         Long idEmergency = Long.parseLong(jsonData.get("emergency").toString());
         User user = userRepository.findUserByIdUser(idUser);
-        Emergency emergency;
+        Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
         if(user != null){
-            emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
             if(emergency != null){
-                repository.save(new Task(jsonData.get("type").toString(),
+                map.put("status", "201");
+                map.put("message", "Task added");
+                result.add(map);
+                return repository.save(new Task(jsonData.get("type").toString(),
                         jsonData.get("description").toString(),
                         Integer.parseInt(jsonData.get("capacity").toString()),
                         Integer.parseInt(jsonData.get("state").toString()),
                         emergency,user));
-                map.put("status", "201");
-                map.put("message", "Task added");
-                result.add(map);
-                return result;
             } else {
                 map.put("status", "401");
                 map.put("message", "Emergency does not exist!.");
                 result.add(map);
-                return result;
+                return repository.save(new Task(jsonData.get("type").toString(),
+                        jsonData.get("description").toString(),
+                        Integer.parseInt(jsonData.get("capacity").toString()),
+                        Integer.parseInt(jsonData.get("state").toString()),
+                        emergency,user));
             }
         } else {
             map.put("status", "401");
             map.put("message", "User does not exist!.");
             result.add(map);
-            return result;
+            return repository.save(new Task(jsonData.get("type").toString(),
+                    jsonData.get("description").toString(),
+                    Integer.parseInt(jsonData.get("capacity").toString()),
+                    Integer.parseInt(jsonData.get("state").toString()),
+                    emergency,user));
         }
     }
 

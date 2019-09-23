@@ -331,12 +331,10 @@ public class VoluntaryController {
     @GetMapping("/topVolunteers/{name}")
     @ResponseBody
     public List<VoluntaryDimension> getTopVoluntaries(@PathVariable String name){
-        List<Voluntary> result = new ArrayList<Voluntary>();
         // Obtengo la Dimension.
         Dimension dimension = dimensionRepository.findDimensionByName(name);
         // De la tabla Voluntary-Dimension, obtengo sólo los campos que tienen la Dimension consultada.
         List<VoluntaryDimension> voluntaryDimensions = voluntaryDimensionRepository.findVoluntaryDimensionByDimensionOrderByQuantityDesc(dimension);
-
         return voluntaryDimensions;
     }
 }
