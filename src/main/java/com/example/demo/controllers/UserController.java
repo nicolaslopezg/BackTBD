@@ -32,9 +32,9 @@ public class UserController {
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public String getNombreUserById(@PathVariable Long id) {
+    public User getNombreUserById(@PathVariable Long id) {
         User user = userRepository.findUserByIdUser(id);
-        return user.getNombreUser();
+        return user;
     }
 
     @GetMapping(value = "/rut/{rut}")
