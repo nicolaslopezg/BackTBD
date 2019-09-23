@@ -3,12 +3,14 @@ package com.example.demo.controllers;
 import com.example.demo.models.Emergency;
 import com.example.demo.models.Task;
 import com.example.demo.models.User;
+import com.example.demo.models.VoluntaryTask;
 import com.example.demo.repositories.EmergencyRepository;
 import com.example.demo.repositories.TaskRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import com.example.demo.repositories.VoluntaryTaskRepository;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -25,6 +27,8 @@ public class TaskController {
     EmergencyRepository emergencyRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    VoluntaryTaskRepository voluntaryTaskRepository;
 
     @GetMapping("/tasks")
     public List<Task> getAll(){return repository.findAll(); }
@@ -95,7 +99,11 @@ public class TaskController {
 
     // Falta que mande el mensaje de exito.
     @DeleteMapping("/tasks/{id}")
-    public void deleteTask(@PathVariable Long id) { repository.deleteById(id); }
+    public void deleteTask(@PathVariable Long id) {
+        Task task = repository.findTaskById(id);
+        VoluntaryTask relation = voluntaryTaskRepository.findVTByTask(task);
+        voluntaryTaskRepository.deleteById(relation.getId());
+        repository.deleteById(id); }
 
     @PostMapping("/tasks/end")
     @ResponseBody
