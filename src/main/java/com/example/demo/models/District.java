@@ -17,10 +17,14 @@ public class District {
     @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "city_id")
     private City city;
+
+    public District(City city,String name) {
+        this.city = city;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

@@ -1,13 +1,11 @@
 package com.example.demo.information;
 
-import com.example.demo.models.Dimension;
-import com.example.demo.models.Voluntary;
-import com.example.demo.models.VoluntaryDimension;
-import com.example.demo.models.VoluntaryTask;
+import com.example.demo.models.*;
 import com.example.demo.repositories.DimensionRepository;
+import com.example.demo.repositories.DistrictRepository;
 import com.example.demo.repositories.VoluntaryDimensionRepository;
 import com.example.demo.repositories.VoluntaryRepository;
-import com.example.demo.repositories.VoluntaryTaskRepository;
+import com.example.demo.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -29,6 +27,10 @@ public class Auxiliar {
     private DimensionRepository dimensionRepository;
     @Autowired
     private VoluntaryDimensionRepository voluntaryDimensionRepository;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private DistrictRepository districtRepository;
 
     public  String clearString(String type,String line){
         String stringWLK;
@@ -153,7 +155,58 @@ public class Auxiliar {
                 voluntaryDimensionRepository.save(new VoluntaryDimension(dimensionRepository.findDimensionByName(dimensions.get(i).get(j)),voluntaryRepository.findVoluntaryByIdVoluntary(Long.valueOf(i+1)),Integer.valueOf(dimensions.get(i).get(j+1))));
             }
         }
+
+        // Se guardan las regiones en city
+        cityRepository.save(new City("Tarapaca"));
+        cityRepository.save(new City("Antofagasta"));
+        cityRepository.save(new City("Atacama"));
+        cityRepository.save(new City("Coquimbo"));
+        cityRepository.save(new City("Valparaiso"));
+        cityRepository.save(new City("Libertador General Bernardo O'Higgins"));
+        cityRepository.save(new City("Maule"));
+        cityRepository.save(new City("Concepcion"));
+        cityRepository.save(new City("Araucania"));
+        cityRepository.save(new City("Los Lagos"));
+        cityRepository.save(new City("Aysen del General Carlos Ibañez del Campo"));
+        cityRepository.save(new City("Magallanes y de la Antartica Chilena"));
+        cityRepository.save(new City("Metropolitana de Santiago"));
+        cityRepository.save(new City("Los Rios"));
+        cityRepository.save(new City("Arica y Parinacota"));
+        cityRepository.save(new City("Ñuble"));
+
+        // Se guardan las comunas
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Santiago de Chile"));
+        districtRepository.save(new District(cityRepository.findCityByName("Concepcion"),"Concepcion"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"Valparaiso"));
+        districtRepository.save(new District(cityRepository.findCityByName("Coquimbo"),"La Serena"));
+        districtRepository.save(new District(cityRepository.findCityByName("Antofagasta"),"Antofagasta"));
+        districtRepository.save(new District(cityRepository.findCityByName("Araucania"),"Temuco"));
+        districtRepository.save(new District(cityRepository.findCityByName("Tarapaca"),"Iquique"));
+        districtRepository.save(new District(cityRepository.findCityByName("Libertador General Bernardo O'Higgins"),"Rancagua"));
+        districtRepository.save(new District(cityRepository.findCityByName("Los Lagos"),"Puerto Montt"));
+        districtRepository.save(new District(cityRepository.findCityByName("Maule"),"Talca"));
+        districtRepository.save(new District(cityRepository.findCityByName("Arica y Parinacota"),"Arica"));
+        districtRepository.save(new District(cityRepository.findCityByName("Ñuble"),"Chillan"));
+        districtRepository.save(new District(cityRepository.findCityByName("Antofagasta"),"Calama"));
+        districtRepository.save(new District(cityRepository.findCityByName("Atacama"),"Copiapo"));
+        districtRepository.save(new District(cityRepository.findCityByName("Los Rios"),"Valdivia"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"Quillota"));
+        districtRepository.save(new District(cityRepository.findCityByName("Los Lagos"),"Osorno"));
+        districtRepository.save(new District(cityRepository.findCityByName("Concepcion"),"Los Angeles"));
+        districtRepository.save(new District(cityRepository.findCityByName("Maule"),"Curico"));
+        districtRepository.save(new District(cityRepository.findCityByName("Magallanes y de la Antartica Chilena"),"Punta Arenas"));
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Colina"));
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Peñaflor"));
+        districtRepository.save(new District(cityRepository.findCityByName("Coquimbo"),"Ovalle"));
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Melipilla"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"Los Andes"));
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Buin"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"San Felipe"));
+        districtRepository.save(new District(cityRepository.findCityByName("Libertador General Bernardo O'Higgins"),"San Fernando"));
+        districtRepository.save(new District(cityRepository.findCityByName("Metropolitana de Santiago"),"Talagante"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"Limache - Olmue"));
+        districtRepository.save(new District(cityRepository.findCityByName("Aysen del General Carlos Ibañez del Campo"),"Coyhaique"));
+        districtRepository.save(new District(cityRepository.findCityByName("Valparaiso"),"San Antonio"));
+        districtRepository.save(new District(cityRepository.findCityByName("Maule"),"Linares"));
     }
-
-
 }
