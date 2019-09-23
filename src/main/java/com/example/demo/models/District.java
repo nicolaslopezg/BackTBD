@@ -21,6 +21,10 @@ public class District {
     @JoinColumn(name = "city_id")
     private City city;
 
+    public District(){
+
+    }
+
     public District(City city,String name) {
         this.city = city;
         this.name = name;
