@@ -43,7 +43,7 @@ public class DistrictController {
         Long idCity = Long.parseLong(jsonData.get("city").toString());
         City city =  cityRepository.findCityById(idCity);
         if(city != null){
-            districtRepository.save(new District(jsonData.get("name").toString(),city));
+            districtRepository.save(new District(city,jsonData.get("name").toString()));
             map.put("status", "201");
             map.put("message", "District added");
             result.add(map);
