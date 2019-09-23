@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.example.demo.models.Role;
 
 //kill -9 $(lsof -t -i:8080)
 @Entity
@@ -31,39 +32,31 @@ public class User implements Serializable {
     @Column(nullable = false, name = "`fechaNacimiento`")
     private Date fechaNacimiento;
 
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "idCliente")
-    //@JsonIgnore
-    //private List<Reserva> reservas;
+    @ManyToOne
+    @JoinColumn(name="role_id")
+    private Role role;
 
     public User() {
 
     }
 
     //Constructor para voluntarios leidos desde el csv.
-    public User(int rut, String nombreUser, String apellidoUser, String correoUser, SimpleDateFormat formatter) throws ParseException {
-        formatter = new SimpleDateFormat("yyyy-MM-dd");
+    public User(int rut, String nombreUser, String apellidoUser, String correoUser,Role role) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.rut = rut;
         this.nombreUser = nombreUser;
         this.apellidoUser = apellidoUser;
         this.correoUser = correoUser;
         this.fechaNacimiento = formatter.parse("1998-03-11");
+        this.role = role;
 
-    }
-
-    public User( int rut, String nombreUser,String apellidoUser, String correoUser ,Date fechaNacimiento) {
-        this.rut = rut;
-        this.nombreUser = nombreUser;
-        this.apellidoUser = apellidoUser;
-        this.correoUser = correoUser;
-        this.fechaNacimiento = fechaNacimiento;
     }
 
     public Long getIdUser() {
         return idUser;
     }
 
-    public void setidUsuario(Long idUsuario) {
+    public void setidUser(Long idUser) {
         this.idUser = idUser;
     }
 

@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Role;
+import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @GetMapping
     @ResponseBody
@@ -46,13 +50,15 @@ public class UserController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, String> map = new HashMap<>();
 
+        Long idRole = Long.parseLong(jsonData.get("role").toString());
+        Role role = roleRepository.findRoleByIdRole(idRole);
+
         User usuario = userRepository.findUserByRut(Integer.parseInt(jsonData.get("rut").toString()));
         if(usuario == null) {
             userRepository.save(new User(Integer.parseInt(jsonData.get("rut").toString()),
                     jsonData.get("nombre").toString(),
                     jsonData.get("apellido").toString(),
-                    jsonData.get("correo").toString(),
-                    formatter.parse(jsonData.get("fechaNacimiento").toString())));
+                    jsonData.get("correo").toString(),role));
             System.out.println(jsonData);
             map.put("status", "201");
             map.put("message", "OK");
