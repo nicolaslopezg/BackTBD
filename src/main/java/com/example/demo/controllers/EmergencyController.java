@@ -2,13 +2,14 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.Task;
 import com.example.demo.models.Emergency;
+import com.example.demo.models.User;
 import com.example.demo.repositories.EmergencyRepository;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/")
@@ -18,6 +19,8 @@ public class EmergencyController {
 
     @Autowired
     EmergencyRepository repository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/emergencies")
     public List<Emergency> getAll(){return repository.findAll(); }
@@ -25,8 +28,29 @@ public class EmergencyController {
     @GetMapping("/emergencies/{id}")
     Optional<Emergency> getEmergencyId(@PathVariable Long id) { return repository.findById(id); }
 
-    @PostMapping("/emergencies")
-    Emergency insertEmergency(@RequestBody Emergency newEmergency) { return repository.save(newEmergency); }
+    @PostMapping("/emergencies/create")
+    @ResponseBody
+    public List<HashMap<String, String>> insertEmergency(@RequestBody Map<String, Object> jsonData) {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        Long idUser = Long.parseLong(jsonData.get("user").toString());
+        User user = userRepository.findUserByIdUser(idUser);
+        if(user != null){
+            repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
+                    Integer.valueOf(jsonData.get("capacity").toString()),
+                    Integer.valueOf(jsonData.get("status").toString()), user));
+            map.put("status", "201");
+            map.put("message", "Emergency added");
+            result.add(map);
+            return result;
+            }
+        else {
+            map.put("status", "401");
+            map.put("message", "User does not exist!.");
+            result.add(map);
+            return result;
+        }
+    }
 
     @PutMapping("/emergencies/{id}")
     public ResponseEntity<Object> updateStudent(@RequestBody Emergency emergency, @PathVariable long id) {

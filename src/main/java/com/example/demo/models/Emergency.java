@@ -28,15 +28,20 @@ public class Emergency {
     @Column(nullable = false, name = "status", unique = false)
     private Integer status;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Emergency() {
 
     }
 
-    public Emergency( String type, String description, Integer capacity, Integer status) {
+    public Emergency( String type, String description, Integer capacity, Integer status, User user) {
         this.type = type;
         this.description = description;
         this.capacity = capacity;
         this.status = status;
+        this.user = user;
     }
 
     public Long getIdEmergency() {

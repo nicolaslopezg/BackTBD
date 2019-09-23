@@ -21,16 +21,24 @@ public class Direction {
     private Integer number;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn (name = "emergency_id")
     private Emergency emergency;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn (name = "district_id")
     private District district;
 
     @ManyToOne
     @JoinColumn (name = "voluntary_id")
     private Voluntary voluntary;
+
+    public Direction(String street, int number, Emergency emergency, District district, Voluntary voluntary){
+        this.street = street;
+        this.number = number;
+        this.emergency = emergency;
+        this.district = district;
+        this.voluntary = voluntary;
+    }
 
     public Long getId() {
         return id;
