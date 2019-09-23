@@ -14,4 +14,5 @@ public interface VoluntaryTaskRepository extends JpaRepository<VoluntaryTask, Lo
     VoluntaryTask findVDById(Long id);
     VoluntaryTask findVTByTask(Task task);
     List<VoluntaryTask> findVoluntaryTasksByTask(Task task);
+    List<VoluntaryTask> findVoluntaryTasksByVoluntary(Voluntary voluntary);
 }

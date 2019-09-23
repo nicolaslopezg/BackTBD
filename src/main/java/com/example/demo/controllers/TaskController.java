@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.*;
+import com.example.demo.repositories.*;
 import com.example.demo.models.Emergency;
 import com.example.demo.models.Task;
 import com.example.demo.models.User;
@@ -29,6 +31,8 @@ public class TaskController {
     UserRepository userRepository;
     @Autowired
     VoluntaryTaskRepository voluntaryTaskRepository;
+    @Autowired
+    VoluntaryRepository voluntaryRepository;
 
     @GetMapping("/tasks")
     public List<Task> getAll(){return repository.findAll(); }
@@ -133,6 +137,37 @@ public class TaskController {
             map.put("message", "OK");
             map.put("item", task.getDescription());
             result.add(map);
+            return result;
+        }
+    }
+
+    @PostMapping("/tasks/voluntary")
+    @ResponseBody
+    public List<HashMap<String, String>> voluntaryTask(@RequestBody Map<String, Object> jsonData) {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        Long idVol = Long.parseLong(jsonData.get("id").toString());
+        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(idVol);
+        if(vol == null) {
+            map.put("status", "404");
+            map.put("message", "Voluntary does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+        else {
+            List<VoluntaryTask> tareas = voluntaryTaskRepository.findVoluntaryTasksByVoluntary(vol);
+            for (VoluntaryTask tarea: tareas) {
+                map.put("idTarea", tarea.getTask().getId().toString());
+                map.put("tipo",  tarea.getTask().getType());
+                map.put("descripcion",  tarea.getTask().getDescription());
+                map.put("capacidad",  tarea.getTask().getCapacity().toString());
+                map.put("estado", tarea.getTask().getState().toString());
+                map.put("idUsuario",  tarea.getTask().getUser().getIdUser().toString());
+                map.put("idEmergencia", tarea.getTask().getEmergency().getIdEmergency().toString() );
+                result.add(map);
+                map = new HashMap<>();
+            }
             return result;
         }
     }

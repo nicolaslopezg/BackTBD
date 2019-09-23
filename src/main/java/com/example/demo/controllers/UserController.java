@@ -131,7 +131,7 @@ public class UserController {
     @GetMapping("/getCordinatorUser")
     @ResponseBody
     public List<User> getCordinators() {
-        Role role = roleRepository.findRoleByIdRole(Long.valueOf(1));
+        Role role = roleRepository.findRoleByIdRole(Long.valueOf(2));
         List<User> users = userRepository.findUserByRole(role);
         return users;
     }
