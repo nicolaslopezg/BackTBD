@@ -127,4 +127,12 @@ public class UserController {
             return result;
         }
     }
+
+    @GetMapping("/getCordinatorUser")
+    @ResponseBody
+    public List<User> getCordinators() {
+        Role role = roleRepository.findRoleByIdRole(Long.valueOf(1));
+        List<User> users = userRepository.findUserByRole(role);
+        return users;
+    }
 }
