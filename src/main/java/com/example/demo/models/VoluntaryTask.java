@@ -14,8 +14,8 @@ public class VoluntaryTask {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(nullable = false, name = "`estado`")
-    private int estado;
+    @Column(nullable = false, name = "status")
+    private int status;
 
     @ManyToOne
     @JoinColumn(name = "task_id")
@@ -27,8 +27,8 @@ public class VoluntaryTask {
 
     public VoluntaryTask(){ }
 
-    public VoluntaryTask( int estado, Task task, Voluntary voluntary) {
-        this.estado = estado;
+    public VoluntaryTask( int status, Task task, Voluntary voluntary) {
+        this.status = status;
         this.task = task;
         this.voluntary = voluntary;
     }
@@ -41,12 +41,12 @@ public class VoluntaryTask {
         this.id = id;
     }
 
-    public int getEstado() {
-        return estado;
+    public int getStatus() {
+        return status;
     }
 
-    public void setEstado(int estado) {
-        this.estado = estado;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Task getTask() {

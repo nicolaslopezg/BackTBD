@@ -64,7 +64,7 @@ public class TaskController {
                 return repository.save(new Task(jsonData.get("type").toString(),
                         jsonData.get("description").toString(),
                         Integer.parseInt(jsonData.get("capacity").toString()),
-                        Integer.parseInt(jsonData.get("state").toString()),
+                        Integer.parseInt(jsonData.get("status").toString()),
                         emergency,user));
             } else {
                 map.put("status", "401");
@@ -73,7 +73,7 @@ public class TaskController {
                 return repository.save(new Task(jsonData.get("type").toString(),
                         jsonData.get("description").toString(),
                         Integer.parseInt(jsonData.get("capacity").toString()),
-                        Integer.parseInt(jsonData.get("state").toString()),
+                        Integer.parseInt(jsonData.get("status").toString()),
                         emergency,user));
             }
         } else {
@@ -83,7 +83,7 @@ public class TaskController {
             return repository.save(new Task(jsonData.get("type").toString(),
                     jsonData.get("description").toString(),
                     Integer.parseInt(jsonData.get("capacity").toString()),
-                    Integer.parseInt(jsonData.get("state").toString()),
+                    Integer.parseInt(jsonData.get("status").toString()),
                     emergency,user));
         }
     }
@@ -124,14 +124,14 @@ public class TaskController {
             return result;
         }
         else {
-            if (task.getState()!=1){
+            if (task.getStatus()!=1){
                 map.put("status", "404");
                 map.put("message", "Task does not finish!.");
                 map.put("item", "");
                 result.add(map);
                 return result;
             }
-            task.setState(2);
+            task.setStatus(2);
             repository.save(task);
             map.put("status", "200");
             map.put("message", "OK");

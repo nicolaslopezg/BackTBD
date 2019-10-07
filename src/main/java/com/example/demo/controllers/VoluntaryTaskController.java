@@ -89,12 +89,12 @@ public class VoluntaryTaskController {
             tareas = repository.findAll();
             for (VoluntaryTask tarea: tareas) {
                 if(tarea.getVoluntary().getIdVoluntary().equals(idVol)){
-                    map.put("tarea", "");
-                    map.put("idTarea", tarea.getTask().getId().toString());
-                    map.put("tipo",  tarea.getTask().getType());
-                    map.put("descripcion",  tarea.getTask().getDescription());
-                    map.put("capacidad",  tarea.getTask().getCapacity().toString());
-                    map.put("estado", tarea.getTask().getState().toString());
+                    map.put("task", "");
+                    map.put("idTask", tarea.getTask().getId().toString());
+                    map.put("type",  tarea.getTask().getType());
+                    map.put("description",  tarea.getTask().getDescription());
+                    map.put("capacity",  tarea.getTask().getCapacity().toString());
+                    map.put("status", tarea.getTask().getStatus().toString());
                     result.add(map);
                     map = new HashMap<>();
                 }

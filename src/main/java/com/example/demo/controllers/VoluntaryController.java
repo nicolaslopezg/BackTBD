@@ -302,7 +302,7 @@ public class VoluntaryController {
                         voluntaryTaskRepository.save(asignacion);
                         vol.setAsignado(false);
                         voluntaryRepository.save(vol);
-                        task.setState(1);
+                        task.setStatus(1);
                         taskRepository.save(task);
                         System.out.println(jsonData);
                         map.put("status", "201");

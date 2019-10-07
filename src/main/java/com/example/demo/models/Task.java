@@ -29,8 +29,8 @@ public class Task {
     private Integer capacity;
 
     @NotNull
-    @Column(nullable = false, name = "`state`", unique = false)
-    private Integer state;
+    @Column(nullable = false, name = "`status`", unique = false)
+    private Integer status;
 
     @ManyToOne
     @JoinColumn(name = "emergency_id")
@@ -44,11 +44,11 @@ public class Task {
 
     }
 
-    public Task( String type, String description, Integer capacity, Integer state, Emergency emergency, User user) {
+    public Task( String type, String description, Integer capacity, Integer status, Emergency emergency, User user) {
         this.type = type;
         this.description = description;
         this.capacity = capacity;
-        this.state = state;
+        this.status = status;
         this.emergency = emergency;
         this.user = user;
     }
@@ -69,9 +69,9 @@ public class Task {
 
     public void setCapacity(Integer capacity) { this.capacity = capacity; }
 
-    public Integer getState() { return state; }
+    public Integer getStatus() { return status; }
 
-    public void setState(Integer state) { this.state = state; }
+    public void setStatus(Integer status) { this.status = status; }
 
     public Emergency getEmergency() { return emergency; }
 
