@@ -1,7 +1,10 @@
 package com.example.demo.information;
 
 import com.example.demo.models.*;
+import com.example.demo.repositories.EmergencyRepository;
 import com.example.demo.repositories.DimensionRepository;
+import com.example.demo.repositories.TaskRepository;
+import com.example.demo.repositories.VoluntaryTaskRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.DistrictRepository;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.interfaces.RSAKey;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +43,12 @@ public class Auxiliar {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private EmergencyRepository emergencyRepository;
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private VoluntaryTaskRepository voluntaryTaskRepository;
 
     public  String clearString(String type,String line){
         String stringWLK;
@@ -233,5 +243,19 @@ public class Auxiliar {
         userRepository.save(new User(191324378,"Humberto","Suazo","humbertosuazo@gmail.com",roleRepository.findRoleByTipo(2)));
         userRepository.save(new User(175467678,"Jorge","Valdivia","magovaldivia@gmail.com",roleRepository.findRoleByTipo(2)));
         userRepository.save(new User(196756578,"Claudio","Bravo","claudiobravo@gmail.com",roleRepository.findRoleByTipo(2)));
+
+        //Se guardan emergencias
+        emergencyRepository.save(new Emergency("Incendio","Se queman los arboles",30,1,userRepository.findUserByRut(197893478)));
+        emergencyRepository.save(new Emergency("Dar comida","Ayudar a los pobres",50,2,userRepository.findUserByRut(346653478)));
+
+        //Se guardan tareas
+        taskRepository.save(new Task("Incendio","Se queman los arboles",30,1,emergencyRepository.findEmergencyByType("Incendio"),userRepository.findUserByRut(197893478)));
+        taskRepository.save(new Task("Dar comida","Se queman los arboles",30,2,emergencyRepository.findEmergencyByType("Dar Comida"),userRepository.findUserByRut(197893478)));
+
+        Long x = Long.parseLong("1");
+        Long y = Long.parseLong("2");
+        //Se guarda relacion voluntario y tarea
+        voluntaryTaskRepository.save(new VoluntaryTask(1,taskRepository.findTaskById(x),voluntaryRepository.findVoluntaryByRut(0)));
+        voluntaryTaskRepository.save(new VoluntaryTask(2,taskRepository.findTaskById(y),voluntaryRepository.findVoluntaryByRut(0)));
     }
 }

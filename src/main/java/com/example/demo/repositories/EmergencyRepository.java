@@ -11,5 +11,6 @@ public interface EmergencyRepository extends JpaRepository<Emergency, Long>{
     // Funcionando
     Optional<Emergency> findById(Long id);
     Emergency findEmergencyByIdEmergency(Long idEmergency);
+    Emergency findEmergencyByType(String type);
     void deleteById(Long id);
 }

@@ -70,7 +70,43 @@ public class VoluntaryTaskController {
         return repository.findVDById(id);
     }
 
+    @PostMapping("/voluntary_tasks/voluntary")
+    @ResponseBody
+    public List<HashMap<String, String>> voluntaryTask(@RequestBody Map<String, Object> jsonData) {
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<>();
+        Long idVol = Long.parseLong(jsonData.get("id").toString());
+        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(idVol);
+        List<VoluntaryTask> tareas;
+        if(vol == null) {
+            map.put("status", "404");
+            map.put("message", "Voluntary does not exist!.");
+            map.put("item", "");
+            result.add(map);
+            return result;
+        }
+        else {
+            tareas = repository.findAll();
+            for (VoluntaryTask tarea: tareas) {
+                if(tarea.getVoluntary().getIdVoluntary().equals(idVol)){
+                    map.put("tarea", "");
+                    map.put("idTarea", tarea.getTask().getId().toString());
+                    map.put("tipo",  tarea.getTask().getType());
+                    map.put("descripcion",  tarea.getTask().getDescription());
+                    map.put("capacidad",  tarea.getTask().getCapacity().toString());
+                    map.put("estado", tarea.getTask().getState().toString());
+                    result.add(map);
+                    map = new HashMap<>();
+                }
+            }
+            if (tareas.size()==0){
+                map.put("Sin", "Tareas");
+                result.add(map);
+            }
 
+            return result;
+        }
+    }
 
 }
 
