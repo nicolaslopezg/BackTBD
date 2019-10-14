@@ -36,13 +36,13 @@ public class VoluntaryEquipmentController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public VoluntaryEquipment getVoluntaryEquipmentById(@PathVariable Long id) {
-        return voluntaryEquipmentRepository.findVoluntaryEquipmentByIdVoluntaryEquipment(id);
+        return voluntaryEquipmentRepository.findVoluntaryEquipmentById(id);
     }
 
     @RequestMapping(value = "/voluntary/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<VoluntaryEquipment> getRegistroServicioByIdRegistro(@PathVariable Long id) {
-        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(id);
+        Voluntary vol = voluntaryRepository.findVoluntaryById(id);
         return voluntaryEquipmentRepository.findVoluntaryEquipmentByVoluntary(vol);
     }
 
@@ -53,8 +53,8 @@ public class VoluntaryEquipmentController {
         HashMap<String, String> map = new HashMap<>();
         Long idVoluntary = Long.parseLong(jsonData.get("idVoluntary").toString());
         Long idEquipment = Long.parseLong(jsonData.get("idEquipment").toString());
-        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(idVoluntary);
-        Equipment equip = equipmentRepository.findEquipmentByIdEquipment(idEquipment);
+        Voluntary vol = voluntaryRepository.findVoluntaryById(idVoluntary);
+        Equipment equip = equipmentRepository.findEquipmentById(idEquipment);
         if(vol != null){
             if(equip != null){
                 voluntaryEquipmentRepository.save(new VoluntaryEquipment(vol,equip));
@@ -82,7 +82,7 @@ public class VoluntaryEquipmentController {
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        VoluntaryEquipment voleq = voluntaryEquipmentRepository.findVoluntaryEquipmentByIdVoluntaryEquipment(id);
+        VoluntaryEquipment voleq = voluntaryEquipmentRepository.findVoluntaryEquipmentById(id);
 
 
         Voluntary vol = voleq.getVoluntary();

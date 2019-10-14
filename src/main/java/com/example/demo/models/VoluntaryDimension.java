@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class VoluntaryDimension {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -24,16 +25,17 @@ public class VoluntaryDimension {
     @JoinColumn(name = "voluntary_id")
     private Voluntary voluntary;
 
-    public VoluntaryDimension() {
+    // Constructor Vacío.
+    public VoluntaryDimension() { }
 
-    }
-
+    // Constructor.
     public VoluntaryDimension( Dimension dimension, Voluntary voluntary, int quantity) {
         this.dimension = dimension;
         this.voluntary = voluntary;
         this.quantity = quantity;
     }
 
+    // Getter y Setter.
     public Long getId() {
         return id;
     }

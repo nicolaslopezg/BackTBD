@@ -170,7 +170,7 @@ public class Auxiliar {
 
         for(int i = 0; i < dimensions.size(); i++){
             for(int j = 0; j < dimensions.get(i).size() - 1; j = j + 2){
-                voluntaryDimensionRepository.save(new VoluntaryDimension(dimensionRepository.findDimensionByName(dimensions.get(i).get(j)),voluntaryRepository.findVoluntaryByIdVoluntary(Long.valueOf(i+1)),Integer.valueOf(dimensions.get(i).get(j+1))));
+                voluntaryDimensionRepository.save(new VoluntaryDimension(dimensionRepository.findDimensionByName(dimensions.get(i).get(j)),voluntaryRepository.findVoluntaryById(Long.valueOf(i+1)),Integer.valueOf(dimensions.get(i).get(j+1))));
             }
         }
 
@@ -233,16 +233,16 @@ public class Auxiliar {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         // Se guardan los usuarios
-        userRepository.save(new User(197893478,"Carlos","Faundes","carlosfaundes@gmail.com",roleRepository.findRoleByTipo(1)));
-        userRepository.save(new User(191234568,"Nicolas","Lopez","nicolaslopez@gmail.com",roleRepository.findRoleByTipo(1)));
-        userRepository.save(new User(187531378,"Jorge","Ayala","jorgeayala@gmail.com",roleRepository.findRoleByTipo(1)));
-        userRepository.save(new User(236763478,"Javier","Crackceres","javocrack@gmail.com",roleRepository.findRoleByTipo(1)));
-        userRepository.save(new User(194576478,"Fabian","Fardo","fabianfardo@gmail.com",roleRepository.findRoleByTipo(1)));
-        userRepository.save(new User(346653478,"Matias","Fernandez","maticrack14@gmail.com",roleRepository.findRoleByTipo(2)));
-        userRepository.save(new User(191234348,"Esteban","Paredes","estebanparedes@gmail.com",roleRepository.findRoleByTipo(2)));
-        userRepository.save(new User(191324378,"Humberto","Suazo","humbertosuazo@gmail.com",roleRepository.findRoleByTipo(2)));
-        userRepository.save(new User(175467678,"Jorge","Valdivia","magovaldivia@gmail.com",roleRepository.findRoleByTipo(2)));
-        userRepository.save(new User(196756578,"Claudio","Bravo","claudiobravo@gmail.com",roleRepository.findRoleByTipo(2)));
+        userRepository.save(new User(197893478,"Carlos","Faundes","carlosfaundes@gmail.com",roleRepository.findRoleByType(1)));
+        userRepository.save(new User(191234568,"Nicolas","Lopez","nicolaslopez@gmail.com",roleRepository.findRoleByType(1)));
+        userRepository.save(new User(187531378,"Jorge","Ayala","jorgeayala@gmail.com",roleRepository.findRoleByType(1)));
+        userRepository.save(new User(236763478,"Javier","Crackceres","javocrack@gmail.com",roleRepository.findRoleByType(1)));
+        userRepository.save(new User(194576478,"Fabian","Fardo","fabianfardo@gmail.com",roleRepository.findRoleByType(1)));
+        userRepository.save(new User(346653478,"Matias","Fernandez","maticrack14@gmail.com",roleRepository.findRoleByType(2)));
+        userRepository.save(new User(191234348,"Esteban","Paredes","estebanparedes@gmail.com",roleRepository.findRoleByType(2)));
+        userRepository.save(new User(191324378,"Humberto","Suazo","humbertosuazo@gmail.com",roleRepository.findRoleByType(2)));
+        userRepository.save(new User(175467678,"Jorge","Valdivia","magovaldivia@gmail.com",roleRepository.findRoleByType(2)));
+        userRepository.save(new User(196756578,"Claudio","Bravo","claudiobravo@gmail.com",roleRepository.findRoleByType(2)));
 
         //Se guardan emergencias
         emergencyRepository.save(new Emergency("Incendio","Se queman los arboles",30,1,userRepository.findUserByRut(197893478)));

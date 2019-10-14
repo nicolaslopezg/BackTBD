@@ -11,33 +11,32 @@ import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/equipments")
 public class EquipmentController {
     @Autowired
     EquipmentRepository equipmentRepository;
 
     private Random randomGenerator = new Random();
 
-    @GetMapping
+    @GetMapping ("/equipments")
     @ResponseBody
     public List<Equipment> getAllEquipments() {
         return equipmentRepository.findAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/equipments/{id}")
     @ResponseBody
     public String getEquipmentById(@PathVariable Long id) {
-        Equipment user = equipmentRepository.findEquipmentByIdEquipment(id);
-        return user.getNombreEquipment();
+        Equipment user = equipmentRepository.findEquipmentById(id);
+        return user.getName();
     }
 
-    @GetMapping(value = "/tipo/{tipo}")
+    @GetMapping(value = "/equipments/{type}")
     @ResponseBody
     public List<Equipment> getUserByRut(@PathVariable Integer rut){
-        return equipmentRepository.findEquipmentByTipo(rut);
+        return equipmentRepository.findEquipmentByType(rut);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/equipments/create")
     @ResponseBody
     public List<HashMap<String, String>> create(@RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
@@ -46,7 +45,7 @@ public class EquipmentController {
         Equipment equip;
         do {
             codigo = randomGenerator.nextInt(100) + 1;
-            equip = equipmentRepository.findEquipmentByCodigoEquipment(codigo);
+            equip = equipmentRepository.findEquipmentByCode(codigo);
         }while(equip!=null);
 
         if(equip == null) {
@@ -64,18 +63,18 @@ public class EquipmentController {
         else {
             map.put("status", "401");
             map.put("message", "Equipment with this code already exist.");
-            map.put("item", equip.getNombreEquipment());
+            map.put("item", equip.getName());
             result.add(map);
             return result;
         }
     }
 
-    @PostMapping("/update/{codigoEquipment}")
+    @PostMapping("/equipments/update/{code}")
     @ResponseBody
     public List<HashMap<String, String>> update(@PathVariable Long codigoEquipment, @RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Equipment usuario = equipmentRepository.findEquipmentByCodigoEquipment(codigoEquipment);
+        Equipment usuario = equipmentRepository.findEquipmentByCode(codigoEquipment);
         if(usuario == null) {
             map.put("status", "404");
             map.put("message", "Equipment does not exist!.");
@@ -84,26 +83,26 @@ public class EquipmentController {
             return result;
         }
         else {
-            usuario.setTipo(Integer.parseInt(jsonData.get("tipo").toString()));
-            usuario.setNombreEquipment(jsonData.get("nombre").toString());
-            usuario.setCertificacion(jsonData.get("certificacion").toString());
-            usuario.setDetalle(jsonData.get("detalle").toString());
+            usuario.setType(Integer.parseInt(jsonData.get("tipo").toString()));
+            usuario.setName(jsonData.get("nombre").toString());
+            usuario.setCertification(jsonData.get("certificacion").toString());
+            usuario.setDetail(jsonData.get("detalle").toString());
             equipmentRepository.save(usuario);
             map.put("status", "200");
             map.put("message", "OK");
-            map.put("item", usuario.getNombreEquipment());
+            map.put("item", usuario.getName());
             result.add(map);
             return result;
         }
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/delete/{id}")
+    @PostMapping("/equipments/delete/{id}")
     @ResponseBody
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Equipment usuario = equipmentRepository.findEquipmentByIdEquipment(id);
+        Equipment usuario = equipmentRepository.findEquipmentByCode(id);
         if(usuario == null) {
             map.put("status", "404");
             map.put("message", "Equipment does not exist!.");
@@ -112,7 +111,7 @@ public class EquipmentController {
             return result;
         }
         else {
-            String erasedUser = usuario.getNombreEquipment();
+            String erasedUser = usuario.getName();
             equipmentRepository.deleteById(id);
             map.put("status", "200");
             map.put("message", "OK, equipment erased!.");

@@ -11,8 +11,8 @@ import java.util.List;
 @Transactional
 public interface VoluntaryRepository extends JpaRepository<Voluntary, Long> {
 
-    Voluntary findVoluntaryByIdVoluntary(Long idVoluntary);
+    Voluntary findVoluntaryById(Long id);
     Voluntary findVoluntaryByRut(int rut);
-    List<Voluntary> findVoluntaryByAsignado(Boolean asignado);
+    List<Voluntary> findVoluntaryByAsignated(Boolean asignated);
 
 }

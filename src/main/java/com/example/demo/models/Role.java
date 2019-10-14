@@ -9,49 +9,49 @@ import java.util.Date;
 @Table(name="roles")
 public class Role implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idRole")
-    private Long idRole;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
-    @Column(nullable = false, name = "`tipo`")
-    private int tipo;
+    @Column(nullable = false, name = "`type`")
+    private int type;
 
-    @Column(nullable = false, name = "`descripcion`")
-    private String descripcion;
+    @Column(nullable = false, name = "`description`")
+    private String description;
 
+    // Constructor Vacío.
+    public Role() { }
 
-    public Role() {
-
+    // Constructor.
+    public Role( int type, String description) {
+        this.type = type;
+        this.description = description;
     }
 
-    public Role( int tipo, String descripcion) {
-        this.tipo = tipo;
-        this.descripcion = descripcion;
+    public Long getId() {
+        return id;
     }
 
-    public Long getIdRole() {
-        return idRole;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setidRole(Long idRole) {
-        this.idRole = idRole;
+    public int getType() {
+        return type;
     }
 
-    public int getTipo() {
-        return tipo;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public String getDescription() {
+        return description;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

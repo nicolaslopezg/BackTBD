@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 public class VoluntaryTask {
 
+    // Columnas
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -25,14 +26,17 @@ public class VoluntaryTask {
     @JoinColumn(name = "voluntary_id")
     private Voluntary voluntary;
 
+    // Constructor Vacío.
     public VoluntaryTask(){ }
 
+    // Constructor.
     public VoluntaryTask( int status, Task task, Voluntary voluntary) {
         this.status = status;
         this.task = task;
         this.voluntary = voluntary;
     }
 
+    // Getter y Setter.
     public Long getId() {
         return id;
     }

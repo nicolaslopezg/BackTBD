@@ -7,10 +7,11 @@ import javax.persistence.*;
 @Table(name = "emergencies")
 public class Emergency {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEmergency", updatable = false, nullable = false)
-    private Long idEmergency;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @NotNull
     @Column(nullable = false, name = "type", unique = false)
@@ -32,10 +33,10 @@ public class Emergency {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Emergency() {
+    // Constructor Vacío.
+    public Emergency() { }
 
-    }
-
+    // Constructor.
     public Emergency( String type, String description, Integer capacity, Integer status, User user) {
         this.type = type;
         this.description = description;
@@ -44,12 +45,11 @@ public class Emergency {
         this.user = user;
     }
 
-    public Long getIdEmergency() {
-        return idEmergency;
-    }
+    // Getter y Setter.
+    public Long getIdEmergency() { return id; }
 
     public void setIdEmergency(Long idEmergency) {
-        this.idEmergency = idEmergency;
+        this.id = idEmergency;
     }
 
     public String getType() {

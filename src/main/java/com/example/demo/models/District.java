@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class District {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -21,15 +22,16 @@ public class District {
     @JoinColumn(name = "city_id")
     private City city;
 
-    public District(){
+    // Constructor Vacío.
+    public District() { }
 
-    }
-
+    // Constructor.
     public District(City city,String name) {
         this.city = city;
         this.name = name;
     }
 
+    // Getter y Setter.
     public Long getId() {
         return id;
     }

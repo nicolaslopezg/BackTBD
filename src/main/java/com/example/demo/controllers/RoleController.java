@@ -29,14 +29,14 @@ public class RoleController {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public int getTipoById(@PathVariable Long id) {
-        Role role = roleRepository.findRoleByIdRole(id);
-        return role.getTipo();
+        Role role = roleRepository.findRoleById(id);
+        return role.getType();
     }
 
     @GetMapping(value = "/tipo/{tipo}")
     @ResponseBody
     public Role getRoleByTipo(@PathVariable Integer tipo){
-        return roleRepository.findRoleByTipo(tipo);
+        return roleRepository.findRoleByType(tipo);
     }
 
     @PostMapping("/create")
@@ -46,7 +46,7 @@ public class RoleController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, String> map = new HashMap<>();
 
-        Role role = roleRepository.findRoleByTipo(Integer.parseInt(jsonData.get("tipo").toString()));
+        Role role = roleRepository.findRoleByType(Integer.parseInt(jsonData.get("tipo").toString()));
         if(role == null) {
             roleRepository.save(new Role(Integer.parseInt(jsonData.get("tipo").toString()),
                     jsonData.get("descripcion").toString()));
@@ -59,7 +59,7 @@ public class RoleController {
         else {
             map.put("status", "401");
             map.put("message", "Role with this code already exist.");
-            map.put("item", Integer.toString(role.getTipo()));
+            map.put("item", Integer.toString(role.getType()));
             result.add(map);
             return result;
         }
@@ -70,7 +70,7 @@ public class RoleController {
     public List<HashMap<String, String>> update(@PathVariable int tipo, @RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Role role = roleRepository.findRoleByTipo(tipo);
+        Role role = roleRepository.findRoleByType(tipo);
         if(role == null) {
             map.put("status", "404");
             map.put("message", "Role does not exist!.");
@@ -79,12 +79,12 @@ public class RoleController {
             return result;
         }
         else {
-            role.setTipo(Integer.parseInt(jsonData.get("tipo").toString()));
-            role.setDescripcion(jsonData.get("descripcion").toString());
+            role.setType(Integer.parseInt(jsonData.get("tipo").toString()));
+            role.setDescription(jsonData.get("descripcion").toString());
             roleRepository.save(role);
             map.put("status", "200");
             map.put("message", "OK");
-            map.put("item",Integer.toString(role.getTipo()));
+            map.put("item",Integer.toString(role.getType()));
             result.add(map);
             return result;
         }
@@ -96,7 +96,7 @@ public class RoleController {
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Role role = roleRepository.findRoleByIdRole(id);
+        Role role = roleRepository.findRoleById(id);
         if(role == null) {
             map.put("status", "404");
             map.put("message", "Role does not exist!.");
@@ -105,7 +105,7 @@ public class RoleController {
             return result;
         }
         else {
-            String erasedUser = Integer.toString(role.getTipo());
+            String erasedUser = Integer.toString(role.getType());
             roleRepository.deleteById(id);
             map.put("status", "200");
             map.put("message", "OK, role erased!.");

@@ -12,52 +12,53 @@ import com.example.demo.models.Role;
 @Table(name="users")
 public class User implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUser")
-    private Long idUser;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @Column(nullable = false, name = "`rut`", unique = true)
     private int rut;
 
-    @Column(nullable = false, name = "`nombreUser`")
-    private String nombreUser;
+    @Column(nullable = false, name = "`name`")
+    private String name;
 
-    @Column(nullable = false, name = "`apellidoUser`")
-    private String apellidoUser;
+    @Column(nullable = false, name = "`lastname`")
+    private String lastname;
 
-    @Column(nullable = false, name = "`correoUser`")
-    private String correoUser;
+    @Column(nullable = false, name = "`mail`")
+    private String mail;
 
-    @Column(nullable = false, name = "`fechaNacimiento`")
-    private Date fechaNacimiento;
+    @Column(nullable = false, name = "`birthDate`")
+    private Date birthDate;
 
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;
 
-    public User() {
+    // Constructor Vacío.
+    public User() { }
 
-    }
-
-    //Constructor para voluntarios leidos desde el csv.
-    public User(int rut, String nombreUser, String apellidoUser, String correoUser,Role role) throws ParseException {
+    //Constructor.
+    public User(int rut, String name, String lastname, String mail,Role role) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.rut = rut;
-        this.nombreUser = nombreUser;
-        this.apellidoUser = apellidoUser;
-        this.correoUser = correoUser;
-        this.fechaNacimiento = formatter.parse("1998-03-11");
+        this.name = name;
+        this.lastname = lastname;
+        this.mail = mail;
+        this.birthDate = formatter.parse("1998-03-11");
         this.role = role;
 
     }
 
-    public Long getIdUser() {
-        return idUser;
+    // Getter y Setter.
+    public Long getId() {
+        return id;
     }
 
-    public void setidUser(Long idUser) {
-        this.idUser = idUser;
+    public void setId(Long idUser) {
+        this.id = idUser;
     }
 
     public int getRut() {
@@ -68,36 +69,36 @@ public class User implements Serializable {
         this.rut = rut;
     }
 
-    public String getNombreUser() {
-        return nombreUser;
+    public String getName() {
+        return name;
     }
 
-    public void setNombreUser(String nombreUser) {
-        this.nombreUser = nombreUser;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getApellidoUser() {
-        return apellidoUser;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setApellidoUser(String apellidoUser) {
-        this.apellidoUser = apellidoUser;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getCorreoUser() {
-        return correoUser;
+    public String getMail() {
+        return mail;
     }
 
-    public void setCorreoUser(String correoUser) {
-        this.correoUser = correoUser;
+    public void setMail(String correoUser) {
+        this.mail = mail;
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
 }

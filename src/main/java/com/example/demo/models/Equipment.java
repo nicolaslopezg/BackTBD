@@ -9,25 +9,26 @@ import java.util.Date;
 @Table(name="equipments")
 public class Equipment implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEquipment")
-    private Long idEquipment;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
-    @Column(nullable = false, name = "`codigoEquipment`", unique = true)
-    private Long codigoEquipment;
+    @Column(nullable = false, name = "`code`", unique = true)
+    private Long code;
 
-    @Column(nullable = false, name = "`tipo`")
-    private int tipo;
+    @Column(nullable = false, name = "`type`")
+    private int type;
 
-    @Column(nullable = false, name = "`nombreEquipment`")
-    private String nombreEquipment;
+    @Column(nullable = false, name = "`name`")
+    private String name;
 
-    @Column(nullable = false, name = "`certificacion`")
-    private String certificacion;
+    @Column(nullable = false, name = "`certification`")
+    private String certification;
 
-    @Column(nullable = false, name = "`detalle`")
-    private String detalle;
+    @Column(nullable = false, name = "`detail`")
+    private String detail;
 
 
     //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -35,64 +36,63 @@ public class Equipment implements Serializable {
     //@JsonIgnore
     //private List<Reserva> reservas;
 
-    public Equipment() {
+    // Constructor Vacío.
+    public Equipment() { }
 
+    // Constructor.
+    public Equipment( Long code, int type, String name,String certification, String detail) {
+        this.code = code;
+        this.type = type;
+        this.name = name;
+        this.certification = certification;
+        this.detail = detail;
     }
 
-    public Equipment( Long codigoEquipment, int tipo, String nombreEquipment,String certificacion, String detalle) {
-        this.codigoEquipment = codigoEquipment;
-        this.tipo = tipo;
-        this.nombreEquipment = nombreEquipment;
-        this.certificacion = certificacion;
-        this.detalle = detalle;
+    // Getter y Setter.
+    public Long getId() {
+        return id;
     }
 
-    public Long getIdEquipment() {
-        return idEquipment;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setidEquipment(Long idEquipment) {
-        this.idEquipment = idEquipment;
+    public Long getCode() {
+        return code;
     }
 
-    public Long getCodigoEquipment() {
-        return codigoEquipment;
+    public void setCode(Long code) {
+        this.code = code;
     }
 
-    public void setCodigoEquipment(Long codigoEquipment) {
-        this.codigoEquipment = codigoEquipment;
+    public int getType() {
+        return type;
     }
 
-    public int getTipo() {
-        return tipo;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public String getName() {
+        return name;
     }
 
-    public String getNombreEquipment() {
-        return nombreEquipment;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNombreEquipment(String nombreEquipment) {
-        this.nombreEquipment = nombreEquipment;
+    public String getCertification() {
+        return certification;
     }
 
-    public String getCertificacion() {
-        return certificacion;
+    public void setCertification(String certification) { this.certification = certification; }
+
+    public String getDetail() {
+        return detail;
     }
 
-    public void setCertificacion(String certificacion) {
-        this.certificacion = certificacion;
-    }
-
-    public String getDetalle() {
-        return detalle;
-    }
-
-    public void setDetalle(String detalle) {
-        this.detalle = detalle;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
 }

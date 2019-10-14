@@ -12,15 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Servicio Rest de Distrito.
 @CrossOrigin(origins = "*")
 @RestController
 public class DistrictController {
 
+    // Repositorios a utilizar.
     @Autowired
     DistrictRepository districtRepository;
     @Autowired
     CityRepository cityRepository;
 
+    // Servicios.
     @GetMapping("/districts")
     @ResponseBody
     public List<District> getAllDistricts() {
@@ -37,23 +40,16 @@ public class DistrictController {
 
     @PostMapping("/districts/create")
     @ResponseBody
-    public List<HashMap<String, String>> insertDistrict(@RequestBody Map<String, Object> jsonData) {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+    public District insertDistrict(@RequestBody Map<String, Object> jsonData) {
         Long idCity = Long.parseLong(jsonData.get("city").toString());
-        City city =  cityRepository.findCityById(idCity);
-        if(city != null){
-            districtRepository.save(new District(city,jsonData.get("name").toString()));
-            map.put("status", "201");
-            map.put("message", "District added");
-            result.add(map);
-            return result;
+
+        try {
+            City city =  cityRepository.findCityById(idCity);
+            return districtRepository.save(new District(city,jsonData.get("name").toString()));
         }
-        else {
-            map.put("status", "401");
-            map.put("message", "User does not exist!.");
-            result.add(map);
-            return result;
+        catch (NullPointerException e) {
+            System.out.println("City doest no exist!!");
         }
+        return new District();
     }
 }

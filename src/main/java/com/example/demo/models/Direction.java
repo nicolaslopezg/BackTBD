@@ -8,8 +8,10 @@ import javax.persistence.*;
 @Table(name = "directions")
 public class Direction {
 
+    // Columnas.
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @NotNull
@@ -32,7 +34,11 @@ public class Direction {
     @JoinColumn (name = "voluntary_id")
     private Voluntary voluntary;
 
-    public Direction(String street, int number, Emergency emergency, District district, Voluntary voluntary){
+    // Constructor Vacío.
+    public Direction() { }
+
+    // Constructor.
+    public Direction(String street, int number, Emergency emergency, District district, Voluntary voluntary) {
         this.street = street;
         this.number = number;
         this.emergency = emergency;
@@ -40,6 +46,7 @@ public class Direction {
         this.voluntary = voluntary;
     }
 
+    // Getter y Setter.
     public Long getId() {
         return id;
     }

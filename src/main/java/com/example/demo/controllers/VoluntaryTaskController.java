@@ -41,7 +41,7 @@ public class VoluntaryTaskController {
         Long idVoluntary = Long.parseLong(jsonData.get("voluntary").toString());
         Long idTask = Long.parseLong(jsonData.get("task").toString());
 
-        Voluntary voluntary = voluntaryRepository.findVoluntaryByIdVoluntary(idVoluntary);
+        Voluntary voluntary = voluntaryRepository.findVoluntaryById(idVoluntary);
         Task task;
         if(voluntary != null){
             task = taskRepository.findTasksById(idTask);
@@ -76,7 +76,7 @@ public class VoluntaryTaskController {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Long idVol = Long.parseLong(jsonData.get("id").toString());
-        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(idVol);
+        Voluntary vol = voluntaryRepository.findVoluntaryById(idVol);
         List<VoluntaryTask> tareas;
         if(vol == null) {
             map.put("status", "404");
@@ -88,7 +88,7 @@ public class VoluntaryTaskController {
         else {
             tareas = repository.findAll();
             for (VoluntaryTask tarea: tareas) {
-                if(tarea.getVoluntary().getIdVoluntary().equals(idVol)){
+                if(tarea.getVoluntary().getId().equals(idVol)){
                     map.put("task", "");
                     map.put("idTask", tarea.getTask().getId().toString());
                     map.put("type",  tarea.getTask().getType());

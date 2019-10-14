@@ -10,10 +10,11 @@ import java.io.Serializable;
 @Table(name="VoluntaryEquipments")
 public class VoluntaryEquipment implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idVoluntaryEquipment")
-    private Long idVoluntaryEquipment;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "equipment_id")
@@ -23,17 +24,22 @@ public class VoluntaryEquipment implements Serializable {
     @JoinColumn(name = "voluntary_id")
     private Voluntary voluntary;
 
+    // Constructor Vacío.
+    public VoluntaryEquipment() { }
+
+    // Constructor.
     public VoluntaryEquipment( Voluntary vol, Equipment equip) {
         this.voluntary = vol;
         this.equipment = equip;
     }
 
-    public Long getIdVolEquip() {
-        return idVoluntaryEquipment;
+    // Getter y Setter.
+    public Long getId() {
+        return id;
     }
 
-    public void setIdVolEquip(Long idVolEquip) {
-        this.idVoluntaryEquipment = idVolEquip;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Voluntary getVoluntary() {

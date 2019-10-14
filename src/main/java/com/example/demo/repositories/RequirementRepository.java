@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RequirementRepository extends JpaRepository<Requirement, Long> {
 
-    Requirement findRequirementByIdRequirement(Long idRole);
-    Requirement findRequirementByTipo(int tipo);
+    Requirement findRequirementById(Long id);
+    Requirement findRequirementByType(int type);
 }

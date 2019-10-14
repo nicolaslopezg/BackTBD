@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface VoluntaryEquipmentRepository extends JpaRepository<VoluntaryEquipment, Long> {
-    VoluntaryEquipment findVoluntaryEquipmentByIdVoluntaryEquipment(Long idVoluntaryEquipment);
+    VoluntaryEquipment findVoluntaryEquipmentById(Long id);
     List<VoluntaryEquipment> findVoluntaryEquipmentByVoluntary(Voluntary voluntary);
 }

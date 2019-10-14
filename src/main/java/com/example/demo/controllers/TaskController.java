@@ -17,12 +17,13 @@ import com.example.demo.repositories.VoluntaryTaskRepository;
 import javax.validation.Valid;
 import java.util.*;
 
+// Servicio REST de tarea.
 @RestController
-@RequestMapping("/")
 @CrossOrigin(origins = "*")
 
 public class TaskController {
 
+    // Repositorios utilizados.
     @Autowired
     TaskRepository repository;
     @Autowired
@@ -34,16 +35,17 @@ public class TaskController {
     @Autowired
     VoluntaryRepository voluntaryRepository;
 
+    // Servicios
     @GetMapping("/tasks")
     public List<Task> getAll(){return repository.findAll(); }
 
     @GetMapping("/tasks/{id}")
-    Optional<Task> getTaskId(@PathVariable Long id) { return repository.findById(id); }
+    Task getTaskId(@PathVariable Long id) { return repository.findTaskById(id); }
 
     @GetMapping("/taskByEmergency/{id}")
     @ResponseBody
     public List<Task> getTaskByEmergency(@PathVariable Long id) {
-        Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(id);
+        Emergency emergency = emergencyRepository.findEmergencyById(id);
         return repository.findTasksByEmergency(emergency);
     }
 
@@ -54,42 +56,23 @@ public class TaskController {
         HashMap<String, String> map = new HashMap<>();
         Long idUser = Long.parseLong(jsonData.get("user").toString());
         Long idEmergency = Long.parseLong(jsonData.get("emergency").toString());
-        User user = userRepository.findUserByIdUser(idUser);
-        Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
-        if(user != null){
-            if(emergency != null){
-                map.put("status", "201");
-                map.put("message", "Task added");
-                result.add(map);
-                return repository.save(new Task(jsonData.get("type").toString(),
-                        jsonData.get("description").toString(),
-                        Integer.parseInt(jsonData.get("capacity").toString()),
-                        Integer.parseInt(jsonData.get("status").toString()),
-                        emergency,user));
-            } else {
-                map.put("status", "401");
-                map.put("message", "Emergency does not exist!.");
-                result.add(map);
-                return repository.save(new Task(jsonData.get("type").toString(),
-                        jsonData.get("description").toString(),
-                        Integer.parseInt(jsonData.get("capacity").toString()),
-                        Integer.parseInt(jsonData.get("status").toString()),
-                        emergency,user));
+        try {
+            User user = userRepository.findUserById(idUser);
+            try {
+                Emergency emergency = emergencyRepository.findEmergencyById(idEmergency);
+                return repository.save(new Task(jsonData.get("type").toString(), jsonData.get("description").toString(), Integer.parseInt(jsonData.get("capacity").toString()), Integer.parseInt(jsonData.get("status").toString()), emergency,user));
             }
-        } else {
-            map.put("status", "401");
-            map.put("message", "User does not exist!.");
-            result.add(map);
-            return repository.save(new Task(jsonData.get("type").toString(),
-                    jsonData.get("description").toString(),
-                    Integer.parseInt(jsonData.get("capacity").toString()),
-                    Integer.parseInt(jsonData.get("status").toString()),
-                    emergency,user));
+            catch (NullPointerException e) {
+                System.out.println("Emergency does not exist!!");
+            }
         }
+        catch (NullPointerException e) {
+            System.out.println("User does not exist!!");
+        }
+
+        return new Task();
     }
 
-    // Falta que mande error si no se encuentra.
-    // Falta que mande el mensaje de exito.
     @PutMapping("/tasks/{id}")
     public ResponseEntity<Object> updateTask(@RequestBody Task task, @PathVariable long id) {
 
@@ -101,13 +84,25 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    // Falta que mande el mensaje de exito.
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable Long id) {
-        Task task = repository.findTaskById(id);
-        VoluntaryTask relation = voluntaryTaskRepository.findVTByTask(task);
-        voluntaryTaskRepository.deleteById(relation.getId());
-        repository.deleteById(id); }
+        try {
+            Task task = repository.findTaskById(id);
+            try {
+                VoluntaryTask relation = voluntaryTaskRepository.findVTByTask(task);
+                voluntaryTaskRepository.deleteById(relation.getId());
+                repository.deleteById(id);
+            }
+            catch (NullPointerException e) {
+                System.out.println("Relation between task and voluntary does not exist!!");
+                repository.deleteById(id);
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println("Task does not exist!!");
+        }
+    }
+
 
     @PostMapping("/tasks/end")
     @ResponseBody

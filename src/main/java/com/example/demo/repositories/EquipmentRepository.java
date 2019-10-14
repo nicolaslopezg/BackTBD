@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
 
-    Equipment  findEquipmentByIdEquipment(Long idEquipment);
-    List<Equipment> findEquipmentByTipo(int tipo);
-    Equipment  findEquipmentByCodigoEquipment(Long codigoEquipment);
+    Equipment  findEquipmentById(Long id);
+    List<Equipment> findEquipmentByType(int type);
+    Equipment  findEquipmentByCode(Long code);
 
 }

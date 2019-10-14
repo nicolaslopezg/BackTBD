@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 public class Task {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -40,10 +41,10 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Task() {
+    // Constructor Vacío.
+    public Task() { }
 
-    }
-
+    // Constructor.
     public Task( String type, String description, Integer capacity, Integer status, Emergency emergency, User user) {
         this.type = type;
         this.description = description;
@@ -53,6 +54,7 @@ public class Task {
         this.user = user;
     }
 
+    // Getter y Setter.
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }

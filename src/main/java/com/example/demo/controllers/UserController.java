@@ -19,11 +19,13 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
 
+    // Repositorios.
     @Autowired
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
 
+    // Servicios.
     @GetMapping
     @ResponseBody
     public List<User> getAllUsers() {
@@ -33,7 +35,7 @@ public class UserController {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public User getNombreUserById(@PathVariable Long id) {
-        User user = userRepository.findUserByIdUser(id);
+        User user = userRepository.findUserById(id);
         return user;
     }
 
@@ -45,33 +47,24 @@ public class UserController {
 
     @PostMapping("/create")
     @ResponseBody
-    public List<HashMap<String, String>> create(@RequestBody Map<String, Object> jsonData) throws ParseException {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+    public User create(@RequestBody Map<String, Object> jsonData) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        HashMap<String, String> map = new HashMap<>();
 
         Long idRole = Long.parseLong(jsonData.get("role").toString());
-        Role role = roleRepository.findRoleByIdRole(idRole);
-
-        User usuario = userRepository.findUserByRut(Integer.parseInt(jsonData.get("rut").toString()));
-        if(usuario == null) {
-            userRepository.save(new User(Integer.parseInt(jsonData.get("rut").toString()),
-                    jsonData.get("nombre").toString(),
-                    jsonData.get("apellido").toString(),
-                    jsonData.get("correo").toString(),role));
-            System.out.println(jsonData);
-            map.put("status", "201");
-            map.put("message", "OK");
-            result.add(map);
-            return result;
+        try{
+            Role role = roleRepository.findRoleById(idRole);
+            try{
+                User usuario = userRepository.findUserByRut(Integer.parseInt(jsonData.get("rut").toString()));
+                userRepository.save(new User(Integer.parseInt(jsonData.get("rut").toString()),jsonData.get("name").toString(), jsonData.get("lastname").toString(), jsonData.get("mail").toString(),role));
+            }
+            catch (NullPointerException e){
+                System.out.println("User does not exist!!");
+            }
         }
-        else {
-            map.put("status", "401");
-            map.put("message", "User with this rut already exist.");
-            map.put("item", usuario.getNombreUser());
-            result.add(map);
-            return result;
+        catch (NullPointerException e) {
+            System.out.println("Role does not exist!!");
         }
+        return new User();
     }
 
     @PostMapping("/update/{rutUsuario}")
@@ -90,14 +83,14 @@ public class UserController {
         }
         else {
             usuario.setRut(Integer.parseInt(jsonData.get("rut").toString()));
-            usuario.setNombreUser(jsonData.get("nombre").toString());
-            usuario.setApellidoUser(jsonData.get("apellido").toString());
-            usuario.setCorreoUser(jsonData.get("correo").toString());
-            usuario.setFechaNacimiento(formatter.parse(jsonData.get("fechaNacimiento").toString()));
+            usuario.setName(jsonData.get("nombre").toString());
+            usuario.setLastname(jsonData.get("apellido").toString());
+            usuario.setMail(jsonData.get("correo").toString());
+            usuario.setBirthDate(formatter.parse(jsonData.get("fechaNacimiento").toString()));
             userRepository.save(usuario);
             map.put("status", "200");
             map.put("message", "OK");
-            map.put("item", usuario.getNombreUser());
+            map.put("item", usuario.getName());
             result.add(map);
             return result;
         }
@@ -109,7 +102,7 @@ public class UserController {
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        User usuario = userRepository.findUserByIdUser(id);
+        User usuario = userRepository.findUserById(id);
         if(usuario == null) {
             map.put("status", "404");
             map.put("message", "User does not exist!.");
@@ -118,7 +111,7 @@ public class UserController {
             return result;
         }
         else {
-            String erasedUser = usuario.getNombreUser();
+            String erasedUser = usuario.getName();
             userRepository.deleteById(id);
             map.put("status", "200");
             map.put("message", "OK, user erased!.");
@@ -131,7 +124,7 @@ public class UserController {
     @GetMapping("/getCordinatorUser")
     @ResponseBody
     public List<User> getCordinators() {
-        Role role = roleRepository.findRoleByIdRole(Long.valueOf(2));
+        Role role = roleRepository.findRoleById(Long.valueOf(2));
         List<User> users = userRepository.findUserByRole(role);
         return users;
     }

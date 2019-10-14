@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Servicio REST de Ciudad.
 @CrossOrigin(origins = "*")
 @RestController
 public class CityController {
 
+    // Repositorios a utilizar.
     @Autowired
     CityRepository cityRepository;
 
+    // Servicios
     @GetMapping("/cities")
     @ResponseBody
     public List<City> getAllCities() {

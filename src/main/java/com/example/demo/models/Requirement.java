@@ -8,16 +8,17 @@ import java.io.Serializable;
 @Table(name="Requirements")
 public class Requirement implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idRequirement")
-    private Long idRequirement;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
-    @Column(nullable = false, name = "`tipo`", unique = true)
-    private int tipo;
+    @Column(nullable = false, name = "`type`", unique = true)
+    private int type;
 
-    @Column(nullable = false, name = "`descripcion`")
-    private String descripcion;
+    @Column(nullable = false, name = "`description`")
+    private String description;
 
     @ManyToOne
     @JoinColumn
@@ -27,37 +28,36 @@ public class Requirement implements Serializable {
     @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
-    public Requirement() {
+    // Constructor Vacío.
+    public Requirement() { }
 
+    // Constructor
+    public Requirement( int type, String description) {
+        this.type = type;
+        this.description = description;
     }
 
-    public Requirement( int tipo, String descripcion) {
-        this.tipo = tipo;
-        this.descripcion = descripcion;
+    // Getter y Setter
+    public Long getId() {
+        return id;
     }
 
-    public Long getidRequirement() {
-        return idRequirement;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setidRequirement(Long idRequirement) {
-        this.idRequirement = idRequirement;
+    public int getType() {
+        return type;
     }
 
-    public int getTipo() {
-        return tipo;
+    public void setType(int type) { this.type = type; }
+
+    public String getDescription() {
+        return description;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

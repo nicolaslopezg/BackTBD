@@ -35,8 +35,8 @@ public class VoluntaryController {
     @GetMapping(value = "/{id}")
     @ResponseBody
     public String getNombreVoluntaryById(@PathVariable Long id) {
-        Voluntary user = voluntaryRepository.findVoluntaryByIdVoluntary(id);
-        return user.getNombre();
+        Voluntary user = voluntaryRepository.findVoluntaryById(id);
+        return user.getName();
     }
 
     @GetMapping(value = "/rut/{rut}")
@@ -80,7 +80,7 @@ public class VoluntaryController {
         else {
             map.put("status", "401");
             map.put("message", "Voluntary with this rut already exist.");
-            map.put("item", vol.getNombre());
+            map.put("item", vol.getName());
             result.add(map);
             return result;
         }
@@ -102,15 +102,15 @@ public class VoluntaryController {
         }
         else {
             vol.setRut(Integer.parseInt(jsonData.get("rut").toString()));
-            vol.setNombre(jsonData.get("nombre").toString());
-            vol.setApellido(jsonData.get("apellido").toString());
-            vol.setCorreo(jsonData.get("correo").toString());
-            vol.setFechaNacimiento(formatter.parse(jsonData.get("fechaNacimiento").toString()));
-            vol.setAsignado(Boolean.parseBoolean(jsonData.get("asignado").toString()));
+            vol.setName(jsonData.get("nombre").toString());
+            vol.setLastname(jsonData.get("apellido").toString());
+            vol.setMail(jsonData.get("correo").toString());
+            vol.setBirthDate(formatter.parse(jsonData.get("fechaNacimiento").toString()));
+            vol.setAsignated(Boolean.parseBoolean(jsonData.get("asignado").toString()));
             voluntaryRepository.save(vol);
             map.put("status", "200");
             map.put("message", "OK");
-            map.put("item", vol.getNombre());
+            map.put("item", vol.getName());
             result.add(map);
             return result;
         }
@@ -122,7 +122,7 @@ public class VoluntaryController {
     public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
-        Voluntary vol = voluntaryRepository.findVoluntaryByIdVoluntary(id);
+        Voluntary vol = voluntaryRepository.findVoluntaryById(id);
         if(vol == null) {
             map.put("status", "404");
             map.put("message", "Voluntary does not exist!.");
@@ -131,7 +131,7 @@ public class VoluntaryController {
             return result;
         }
         else {
-            String erasedUser = vol.getNombre();
+            String erasedUser = vol.getName();
             voluntaryRepository.deleteById(id);
             map.put("status", "200");
             map.put("message", "OK, voluntary erased!.");
@@ -156,7 +156,7 @@ public class VoluntaryController {
             result.add(map);
             return result;
         } else {
-            if (vol.getAsignado()== true){
+            if (vol.getAsignated()== true){
                 map.put("status", "404");
                 map.put("message", "Voluntary already with task!.");
                 map.put("item", "");
@@ -168,24 +168,24 @@ public class VoluntaryController {
             List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
             for (VoluntaryTask asignacion: asignaciones) {
                 if (asignacion.getVoluntary().equals(vol)){
-                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                    if (asignacion.getStatus()==2){     //Ya fue rechazada
                         map.put("status", "404");
                         map.put("message", "Task  already rejected!.");
                         map.put("item", "");
                         result.add(map);
                         return result;
                     }
-                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
+                    else if(asignacion.getStatus()==1){    //Ya fue aceptada
                         map.put("status", "404");
                         map.put("message", "Task  already accepted!.");
                         map.put("item", "");
                         result.add(map);
                         return result;
                     }
-                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
-                        vol.setAsignado(true);
+                    else if (asignacion.getStatus()==0){    // Asignación por aceptar
+                        vol.setAsignated(true);
                         voluntaryRepository.save(vol);
-                        asignacion.setEstado(1);
+                        asignacion.setStatus(1);
                         voluntaryTaskRepository.save(asignacion);
                         System.out.println(jsonData);
                         map.put("status", "201");
@@ -218,7 +218,7 @@ public class VoluntaryController {
             result.add(map);
             return result;
         } else {
-            if (vol.getAsignado()== true){
+            if (vol.getAsignated()== true){
                 map.put("status", "404");
                 map.put("message", "Voluntary already with task!.");
                 map.put("item", "");
@@ -230,22 +230,22 @@ public class VoluntaryController {
             List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
             for (VoluntaryTask asignacion: asignaciones) {
                 if (asignacion.getVoluntary().equals(vol)){
-                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                    if (asignacion.getStatus()==2){     //Ya fue rechazada
                         map.put("status", "404");
                         map.put("message", "Task  already rejected!.");
                         map.put("item", "");
                         result.add(map);
                         return result;
                     }
-                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
+                    else if(asignacion.getStatus()==1){    //Ya fue aceptada
                         map.put("status", "404");
                         map.put("message", "Task  already accepted!.");
                         map.put("item", "");
                         result.add(map);
                         return result;
                     }
-                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
-                        asignacion.setEstado(2);
+                    else if (asignacion.getStatus()==0){    // Asignación por aceptar
+                        asignacion.setStatus(2);
                         voluntaryTaskRepository.save(asignacion);
                         System.out.println(jsonData);
                         map.put("status", "201");
@@ -278,7 +278,7 @@ public class VoluntaryController {
             result.add(map);
             return result;
         } else {
-            if (vol.getAsignado()== false){
+            if (vol.getAsignated()== false){
                 map.put("status", "404");
                 map.put("message", "Voluntary doesn't have a task!.");
                 map.put("item", "");
@@ -290,17 +290,17 @@ public class VoluntaryController {
             List<VoluntaryTask> asignaciones = voluntaryTaskRepository.findVoluntaryTasksByTask(task);
             for (VoluntaryTask asignacion: asignaciones) {
                 if (asignacion.getVoluntary().equals(vol)){
-                    if (asignacion.getEstado()==2){     //Ya fue rechazada
+                    if (asignacion.getStatus()==2){     //Ya fue rechazada
                         map.put("status", "404");
                         map.put("message", "Task  already rejected!.");
                         map.put("item", "");
                         result.add(map);
                         return result;
                     }
-                    else if(asignacion.getEstado()==1){    //Ya fue aceptada
-                        asignacion.setEstado(3);
+                    else if(asignacion.getStatus()==1){    //Ya fue aceptada
+                        asignacion.setStatus(3);
                         voluntaryTaskRepository.save(asignacion);
-                        vol.setAsignado(false);
+                        vol.setAsignated(false);
                         voluntaryRepository.save(vol);
                         task.setStatus(1);
                         taskRepository.save(task);
@@ -310,7 +310,7 @@ public class VoluntaryController {
                         result.add(map);
                         return result;
                     }
-                    else if (asignacion.getEstado()==0){    // Asignación por aceptar
+                    else if (asignacion.getStatus()==0){    // Asignación por aceptar
                         map.put("status", "404");
                         map.put("message", "Task  not accepted yet!!.");
                         map.put("item", "");

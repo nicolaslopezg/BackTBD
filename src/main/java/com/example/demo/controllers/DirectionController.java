@@ -15,12 +15,13 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.Valid;
 import java.util.*;
 
+// Servicio REST de Dirección.
 @RestController
-@RequestMapping("/")
 @CrossOrigin(origins = "*")
 
 public class DirectionController {
 
+    // Repositorios a utilizar.
     @Autowired
     DirectionRepository repository;
     @Autowired
@@ -30,59 +31,49 @@ public class DirectionController {
     @Autowired
     DistrictRepository districtRepository;
 
+    // Servicios.
     @GetMapping("/directions")
     public List<Direction> getAll(){return repository.findAll(); }
 
     @GetMapping("/directions/{id}")
-    Optional<Direction> getDirectionId(@PathVariable Long id) { return repository.findById(id); }
+    Direction getDirectionId(@PathVariable Long id) { return repository.findDirectionById(id); }
 
     @PostMapping("/direction/create")
     @ResponseBody
-    public List<HashMap<String, String>> insertDirection(@RequestBody Map<String, Object> jsonData) {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+    public Direction insertDirection(@RequestBody Map<String, Object> jsonData) {
+
         Long idVoluntary = Long.parseLong(jsonData.get("voluntary").toString());
         Long idEmergency = Long.parseLong(jsonData.get("emergency").toString());
         Long idDistrict = Long.parseLong(jsonData.get("district").toString());
-        Voluntary voluntary = voluntaryRepository.findVoluntaryByIdVoluntary(idVoluntary);
-        if(voluntary != null){
-            Emergency emergency = emergencyRepository.findEmergencyByIdEmergency(idEmergency);
-            if(emergency != null){
-                District district = districtRepository.findDistrictById(idDistrict);
-                if(district != null){
-                    repository.save(new Direction(jsonData.get("street").toString(),
-                            Integer.valueOf(jsonData.get("number").toString()),
-                            emergency,district,voluntary));
-                    map.put("status", "201");
-                    map.put("message", "Direction added");
-                    result.add(map);
-                    return result;
-                } else {
-                    map.put("status", "401");
-                    map.put("message", "District does not exist!.");
-                    result.add(map);
-                    return result;
-                }
 
-            } else {
-                map.put("status", "401");
-                map.put("message", "Emergency does not exist!.");
-                result.add(map);
-                return result;
+        try {
+            Voluntary voluntary = voluntaryRepository.findVoluntaryById(idVoluntary);
+            try {
+                Emergency emergency = emergencyRepository.findEmergencyById(idEmergency);
+                try {
+                    District district = districtRepository.findDistrictById(idDistrict);
+                    // Una vez que se verifica que ninguna referencia sea nula
+                    return repository.save(new Direction(jsonData.get("street").toString(),Integer.valueOf(jsonData.get("number").toString()),emergency,district,voluntary));
+                }
+                catch (NullPointerException e) {
+                    System.out.println("District does not exist!!");
+                }
             }
-        } else {
-            map.put("status", "401");
-            map.put("message", "Voluntary does not exist!.");
-            result.add(map);
-            return result;
+            catch (NullPointerException e ) {
+                System.out.println("Emergency does not exist!!");
+            }
         }
+        catch (NullPointerException e) {
+            System.out.println("Volunteer does not exist!!");
+        }
+        return new Direction();
     }
 
     @PutMapping("/directions/{id}")
     public ResponseEntity<Object> updateDirection(@RequestBody Direction student, @PathVariable long id) {
 
-        Optional<Direction> studentOptional = repository.findById(id);
-        if (!studentOptional.isPresent())
+        Optional<Direction> directionOptional = repository.findById(id);
+        if (!directionOptional.isPresent())
             return ResponseEntity.notFound().build();
         student.setId(id);
         repository.save(student);

@@ -12,67 +12,66 @@ import java.util.Date;
 @Table(name="volunteers")
 public class Voluntary implements Serializable {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idVoluntary")
-    private Long idVoluntary;
+    @Column(name = "id", updatable = false, nullable = false)
+    private Long id;
 
     @Column(nullable = false, name = "`rut`", unique = true)
     private int rut;
 
-    @Column(nullable = false, name = "`nombre`")
-    private String nombre;
+    @Column(nullable = false, name = "`name`")
+    private String name;
 
-    @Column(nullable = false, name = "`apellido`")
-    private String apellido;
+    @Column(nullable = false, name = "`lastname`")
+    private String lastname;
 
-    @Column(nullable = false, name = "`correo`")
-    private String correo;
+    @Column(nullable = false, name = "`mail`")
+    private String mail;
 
-    @Column(nullable = false, name = "`fechaNacimiento`")
-    private Date fechaNacimiento;
+    @Column(nullable = false, name = "`birthDate`")
+    private Date birthDate;
 
-    @Column(nullable = false, name = "`asignado`")
-    private Boolean asignado;
+    @Column(nullable = false, name = "`asignated`")
+    private Boolean asignated;
 
-    @Column(name = "`sexo`")
-    private String sexo;
+    @Column(name = "`gender`")
+    private String gender;
 
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@JoinColumn(name = "idCliente")
-    //@JsonIgnore
-    //private List<Reserva> reservas;
-
+    // Constructor Vacío.
     public Voluntary() { }
 
     //Constructor para voluntarios leidos desde el csv.
-    public Voluntary(String nombre, String apellido, String correo, String sexo, int rut) throws ParseException {
+    public Voluntary(String name, String lastname, String mail, String gender, int rut) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.rut = rut;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.fechaNacimiento = formatter.parse("1998-03-11");
-        this.asignado = false;
-        this.sexo = sexo;
+        this.name = name;
+        this.lastname = lastname;
+        this.mail = mail;
+        this.birthDate = formatter.parse("1998-03-11");
+        this.asignated = false;
+        this.gender = gender;
 
     }
 
-    public Voluntary( int rut, String nombre,String apellido, String correo ,Date fechaNacimiento, Boolean asignado) {
+    // Constructor.
+    public Voluntary( int rut, String name,String lastname, String mail ,Date birthDate, Boolean asignated) {
         this.rut = rut;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.fechaNacimiento = fechaNacimiento;
-        this.asignado = asignado;
+        this.name = name;
+        this.lastname = lastname;
+        this.mail = mail;
+        this.birthDate = birthDate;
+        this.asignated = asignated;
     }
 
-    public Long getIdVoluntary() {
-        return idVoluntary;
+    // Getter y Setter.
+    public Long getId() {
+        return id;
     }
 
-    public void setidVoluntary(Long idUsuario) {
-        this.idVoluntary = idVoluntary;
+    public void setId(Long idUsuario) {
+        this.id = id;
     }
 
     public int getRut() {
@@ -83,44 +82,44 @@ public class Voluntary implements Serializable {
         this.rut = rut;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getMail() {
+        return mail;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public Boolean getAsignado() {
-        return asignado;
+    public Boolean getAsignated() {
+        return asignated;
     }
 
-    public void setAsignado(Boolean asignado) {
-        this.asignado = asignado;
+    public void setAsignated(Boolean asignated) {
+        this.asignated = asignated;
     }
 
 }

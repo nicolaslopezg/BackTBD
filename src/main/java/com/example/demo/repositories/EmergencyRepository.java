@@ -8,9 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface EmergencyRepository extends JpaRepository<Emergency, Long>{
-    // Funcionando
-    Optional<Emergency> findById(Long id);
-    Emergency findEmergencyByIdEmergency(Long idEmergency);
+
+    Emergency findEmergencyById(Long id);
     Emergency findEmergencyByType(String type);
     void deleteById(Long id);
 }

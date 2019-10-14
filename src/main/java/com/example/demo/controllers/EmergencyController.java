@@ -13,12 +13,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
+// Servicio REST de Emergencia.
 @RestController
-@RequestMapping("/")
 @CrossOrigin(origins = "*")
 
 public class EmergencyController {
 
+    // Repositorios a utilizar.
     @Autowired
     EmergencyRepository repository;
     @Autowired
@@ -26,6 +27,7 @@ public class EmergencyController {
     @Autowired
     DirectionRepository directionRepository;
 
+    // Servicios.
     @GetMapping("/emergencies")
     public List<Emergency> getAll(){return repository.findAll(); }
 
@@ -35,33 +37,25 @@ public class EmergencyController {
     @PostMapping("/emergencies/create")
     @ResponseBody
     public Emergency insertEmergency(@RequestBody Map<String, Object> jsonData) {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+
         Long idUser = Long.parseLong(jsonData.get("user").toString());
-        User user = userRepository.findUserByIdUser(idUser);
-        if(user != null){
-            map.put("status", "201");
-            map.put("message", "Emergency added");
-            result.add(map);
-            return repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
-                    Integer.valueOf(jsonData.get("capacity").toString()),
-                    Integer.valueOf(jsonData.get("status").toString()), user));
-            }
-        else {
-            repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
-                    Integer.valueOf(jsonData.get("capacity").toString()),
-                    Integer.valueOf(jsonData.get("status").toString()),user));
+
+        try {
+            User user = userRepository.findUserById(idUser);
+                    // Una vez que se verifica que ninguna referencia sea nula
+            return repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),Integer.valueOf(jsonData.get("capacity").toString()),Integer.valueOf(jsonData.get("status").toString()),user));
         }
-        return repository.save(new Emergency(jsonData.get("type").toString(),jsonData.get("description").toString(),
-                Integer.valueOf(jsonData.get("capacity").toString()),
-                Integer.valueOf(jsonData.get("status").toString()), user));
+        catch (NullPointerException e) {
+            System.out.println("User does not exist!!");
+        }
+        return new Emergency();
     }
 
     @PutMapping("/emergencies/{id}")
-    public ResponseEntity<Object> updateStudent(@RequestBody Emergency emergency, @PathVariable long id) {
+    public ResponseEntity<Object> updateEmergency(@RequestBody Emergency emergency, @PathVariable long id) {
 
-        Optional<Emergency> studentOptional = repository.findById(id);
-        if (!studentOptional.isPresent())
+        Optional<Emergency> emergencyOptional = repository.findById(id);
+        if (!emergencyOptional.isPresent())
             return ResponseEntity.notFound().build();
         emergency.setIdEmergency(id);
         repository.save(emergency);
@@ -70,10 +64,21 @@ public class EmergencyController {
 
     @DeleteMapping("/emergencies/{id}")
     public void deleteEmergency(@PathVariable Long id) {
-        Emergency emergency = repository.findEmergencyByIdEmergency(id);
-        Direction direction = directionRepository.findDirectionByEmergency(emergency);
-        directionRepository.deleteById(direction.getId());
-        repository.deleteById(id);
+        try {
+            Emergency emergency = repository.findEmergencyById(id);
+            try {
+                Direction direction = directionRepository.findDirectionByEmergency(emergency);
+                directionRepository.deleteById(direction.getId());
+                repository.deleteById(id);
+            }
+            catch (NullPointerException e) {
+                System.out.println("District does not exist!!");
+                repository.deleteById(id);
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println("Emergency does not exist!!");
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class Dimension {
 
+    // Columnas.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -17,17 +18,15 @@ public class Dimension {
     @Column(nullable = false, name = "`name`", unique = false)
     private String name;
 
+    // Constructor vacío.
+    public Dimension() { }
 
-
-    public Dimension() {
-
-    }
-
+    // Constructor.
     public Dimension( String name) {
         this.name = name;
     }
 
-
+    // Getter y Setter.
     public Long getId() {
         return id;
     }
