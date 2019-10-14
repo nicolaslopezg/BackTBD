@@ -39,11 +39,17 @@ public class Voluntary implements Serializable {
     @Column(name = "`gender`")
     private String gender;
 
+    @Column(name = "`latitude`")
+    private String latitude;
+
+    @Column(name = "`longitude`")
+    private String longitude;
+
     // Constructor Vacío.
     public Voluntary() { }
 
     //Constructor para voluntarios leidos desde el csv.
-    public Voluntary(String name, String lastname, String mail, String gender, int rut) throws ParseException {
+    public Voluntary(String name, String lastname, String mail, String gender, int rut, String latitude, String longitude) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.rut = rut;
         this.name = name;
@@ -52,7 +58,8 @@ public class Voluntary implements Serializable {
         this.birthDate = formatter.parse("1998-03-11");
         this.asignated = false;
         this.gender = gender;
-
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // Constructor.
@@ -120,6 +127,14 @@ public class Voluntary implements Serializable {
 
     public void setAsignated(Boolean asignated) {
         this.asignated = asignated;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
     }
 
 }

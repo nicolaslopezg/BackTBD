@@ -147,6 +147,28 @@ public class Auxiliar {
         return result;
     }
 
+    public List<List<String>>  readCSVUbication() {
+        List<List<String>> result = new ArrayList<List<String>>();
+        int i = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader("./src/main/java/com/example/demo/information/TBD VOLUNTARIOS.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (i != 0) {
+
+                    List<String> partialUbication = new ArrayList<String>();
+                    String[] parts = line.split("\\]");
+                    String[] parts1 = parts[2].split(",");
+                    partialUbication.add(parts1[1]);
+                    partialUbication.add(parts1[2]);
+                    result.add(partialUbication);
+                }
+                i++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @EventListener
     public void appReady(ApplicationReadyEvent event) throws ParseException {
@@ -155,6 +177,8 @@ public class Auxiliar {
         information = readCSVPersonalInfo();
         List<List<String>> dimensions = new ArrayList<List<String>>();
         dimensions = readCSVDimensions();
+        List<List<String>> ubication = new ArrayList<List<String>>();
+        ubication = readCSVUbication();
 
         // Se guardan las dimensiones en la base de datos.
         dimensionRepository.save(new Dimension("Fuerza"));
@@ -165,7 +189,7 @@ public class Auxiliar {
 
         // Se guardan los voluntarios en la base de datos.
         for(int i = 0; i < information.size(); i++){
-            voluntaryRepository.save(new Voluntary(information.get(i).get(0),information.get(i).get(1),information.get(i).get(2),information.get(i).get(3),i));
+            voluntaryRepository.save(new Voluntary(information.get(i).get(0),information.get(i).get(1),information.get(i).get(2),information.get(i).get(3),i,ubication.get(i).get(0),ubication.get(i).get(1)));
         }
 
         for(int i = 0; i < dimensions.size(); i++){
