@@ -33,10 +33,7 @@ public class VoluntaryTaskController {
 
     @PostMapping("/voluntary_tasks/create")
     @ResponseBody
-    public List<HashMap<String, String>> insertVoluntary_Task(@RequestBody Map<String, Object> jsonData){
-
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+    public VoluntaryTask insertVoluntary_Task(@RequestBody Map<String, Object> jsonData){
 
         Long idVoluntary = Long.parseLong(jsonData.get("voluntary").toString());
         Long idTask = Long.parseLong(jsonData.get("task").toString());
@@ -46,22 +43,14 @@ public class VoluntaryTaskController {
         if(voluntary != null){
             task = taskRepository.findTasksById(idTask);
             if(task != null){
-                repository.save(new VoluntaryTask(0, task,voluntary));
-                map.put("status", "201");
-                map.put("message", "Voluntary_Task added");
-                result.add(map);
-                return result;
+                return repository.save(new VoluntaryTask(0, task,voluntary));
             } else {
-                map.put("status", "401");
-                map.put("message", "Task does not exist!.");
-                result.add(map);
-                return result;
+                System.out.println("Task does not exist!!");
+                return new VoluntaryTask();
             }
         } else {
-            map.put("status", "401");
-            map.put("message", "Voluntary does not exist!.");
-            result.add(map);
-            return result;
+            System.out.println("Voluntary does not exist!!");
+            return new VoluntaryTask();
         }
     }
 

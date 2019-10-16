@@ -5,6 +5,7 @@ import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -69,17 +70,12 @@ public class UserController {
 
     @PostMapping("/update/{rutUsuario}")
     @ResponseBody
-    public List<HashMap<String, String>> update(@PathVariable int rutUsuario, @RequestBody Map<String, Object> jsonData) throws ParseException {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+    public ResponseEntity<Object> update(@PathVariable int rutUsuario, @RequestBody Map<String, Object> jsonData) throws ParseException {
         User usuario = userRepository.findUserByRut(rutUsuario);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         if(usuario == null) {
-            map.put("status", "404");
-            map.put("message", "User does not exist!.");
-            map.put("item", "");
-            result.add(map);
-            return result;
+            System.out.println("User does not exist!!");
+            return ResponseEntity.notFound().build();
         }
         else {
             usuario.setRut(Integer.parseInt(jsonData.get("rut").toString()));
@@ -88,36 +84,21 @@ public class UserController {
             usuario.setMail(jsonData.get("correo").toString());
             usuario.setBirthDate(formatter.parse(jsonData.get("fechaNacimiento").toString()));
             userRepository.save(usuario);
-            map.put("status", "200");
-            map.put("message", "OK");
-            map.put("item", usuario.getName());
-            result.add(map);
-            return result;
+            return ResponseEntity.noContent().build();
         }
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/delete/{id}")
     @ResponseBody
-    public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
-        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<>();
+    public void delete(@PathVariable Long id) throws ParseException {
         User usuario = userRepository.findUserById(id);
         if(usuario == null) {
-            map.put("status", "404");
-            map.put("message", "User does not exist!.");
-            map.put("item", "");
-            result.add(map);
-            return result;
+            System.out.println("User does not exist!!");
+            return;
         }
         else {
-            String erasedUser = usuario.getName();
-            userRepository.deleteById(id);
-            map.put("status", "200");
-            map.put("message", "OK, user erased!.");
-            map.put("item", erasedUser);
-            result.add(map);
-            return result;
+                userRepository.deleteById(id);
         }
     }
 

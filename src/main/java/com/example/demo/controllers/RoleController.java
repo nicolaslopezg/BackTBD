@@ -2,8 +2,11 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.models.Role;
+import com.example.demo.models.User;
 import com.example.demo.repositories.RoleRepository;
+import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -19,6 +22,8 @@ import java.util.Map;
 public class RoleController {
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping
     @ResponseBody
@@ -41,33 +46,31 @@ public class RoleController {
 
     @PostMapping("/create")
     @ResponseBody
-    public List<HashMap<String, String>> create(@RequestBody Map<String, Object> jsonData) throws ParseException {
+    public Role create(@RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, String> map = new HashMap<>();
 
+
         Role role = roleRepository.findRoleByType(Integer.parseInt(jsonData.get("tipo").toString()));
         if(role == null) {
-            roleRepository.save(new Role(Integer.parseInt(jsonData.get("tipo").toString()),
-                    jsonData.get("descripcion").toString()));
-            System.out.println(jsonData);
-            map.put("status", "201");
-            map.put("message", "OK");
-            result.add(map);
-            return result;
+                return roleRepository.save(new Role(Integer.parseInt(jsonData.get("tipo").toString()),
+                        jsonData.get("descripcion").toString()));
+
         }
         else {
             map.put("status", "401");
+            System.out.println("Role with this code already exist.");
             map.put("message", "Role with this code already exist.");
             map.put("item", Integer.toString(role.getType()));
             result.add(map);
-            return result;
+            return new Role();
         }
     }
 
     @PostMapping("/update/{tipo}")
     @ResponseBody
-    public List<HashMap<String, String>> update(@PathVariable int tipo, @RequestBody Map<String, Object> jsonData) throws ParseException {
+    public ResponseEntity<Object> update(@PathVariable int tipo, @RequestBody Map<String, Object> jsonData) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Role role = roleRepository.findRoleByType(tipo);
@@ -76,7 +79,7 @@ public class RoleController {
             map.put("message", "Role does not exist!.");
             map.put("item", "");
             result.add(map);
-            return result;
+            return ResponseEntity.notFound().build();
         }
         else {
             role.setType(Integer.parseInt(jsonData.get("tipo").toString()));
@@ -86,23 +89,24 @@ public class RoleController {
             map.put("message", "OK");
             map.put("item",Integer.toString(role.getType()));
             result.add(map);
-            return result;
+            return ResponseEntity.noContent().build();
         }
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/delete/{id}")
     @ResponseBody
-    public List<HashMap<String, String>> delete(@PathVariable Long id) throws ParseException {
+    public void delete(@PathVariable Long id) throws ParseException {
         List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map = new HashMap<>();
         Role role = roleRepository.findRoleById(id);
         if(role == null) {
             map.put("status", "404");
             map.put("message", "Role does not exist!.");
+            System.out.println("Role does not exist!.");
             map.put("item", "");
             result.add(map);
-            return result;
+            return;
         }
         else {
             String erasedUser = Integer.toString(role.getType());
@@ -111,7 +115,7 @@ public class RoleController {
             map.put("message", "OK, role erased!.");
             map.put("item", erasedUser);
             result.add(map);
-            return result;
+            return;
         }
     }
 }
