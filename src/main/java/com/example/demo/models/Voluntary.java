@@ -1,10 +1,10 @@
 package com.example.demo.models;
 
+
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.postgis.Geometry;
-import org.postgis.Point;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class Voluntary implements Serializable {
     @Column(name = "`longitude`")
     private String longitude;
 
-    @Column(columnDefinition = "Geometry", name = "`location`")
+    @Column(columnDefinition = "Geometry", name = "`location`", nullable = true)
     private Point location;
 
 
@@ -69,16 +69,13 @@ public class Voluntary implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
 
+        GeometryFactory geometryFactory = new GeometryFactory();
 
-        //en esta parte se agregaría el punto pero no sé desde donde lees el csv para agregar los datos...
-        try {
-            this.location.setX(Double.parseDouble(latitude));
-            this.location.setY(Double.parseDouble(longitude));
-        } catch(NullPointerException e) {
+        Coordinate coordinate = new Coordinate();
+        coordinate.x = Double.parseDouble(latitude);;
+        coordinate.y = Double.parseDouble(longitude);;
 
-
-            //System.out.print("Latitude or longitude are null");
-        }
+        this.location = geometryFactory.createPoint(coordinate);
     }
 
     // Constructor.
@@ -156,8 +153,18 @@ public class Voluntary implements Serializable {
         return longitude;
     }
 
-    public void setLocation(Point point) {
-        this.location = point;
+    public void setLocation(Double x, Double y) {
+        Double i,j;
+        i = Double.parseDouble(latitude);
+        j = Double.parseDouble(longitude);
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        Coordinate coordinate = new Coordinate();
+        coordinate.x = i;
+        coordinate.y = j;
+
+        this.location = geometryFactory.createPoint(coordinate);
     }
 
 }
