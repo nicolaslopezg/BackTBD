@@ -1,6 +1,10 @@
 package com.example.demo.models;
 
-
+import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.postgis.Geometry;
+import org.postgis.Point;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -45,6 +49,10 @@ public class Voluntary implements Serializable {
     @Column(name = "`longitude`")
     private String longitude;
 
+    @Column(columnDefinition = "Geometry", name = "`location`")
+    private Point location;
+
+
     // Constructor Vacío.
     public Voluntary() { }
 
@@ -60,6 +68,17 @@ public class Voluntary implements Serializable {
         this.gender = gender;
         this.latitude = latitude;
         this.longitude = longitude;
+
+
+        //en esta parte se agregaría el punto pero no sé desde donde lees el csv para agregar los datos...
+        try {
+            this.location.setX(Double.parseDouble(latitude));
+            this.location.setY(Double.parseDouble(longitude));
+        } catch(NullPointerException e) {
+
+
+            //System.out.print("Latitude or longitude are null");
+        }
     }
 
     // Constructor.
@@ -135,6 +154,10 @@ public class Voluntary implements Serializable {
 
     public String getLongitude() {
         return longitude;
+    }
+
+    public void setLocation(Point point) {
+        this.location = point;
     }
 
 }
