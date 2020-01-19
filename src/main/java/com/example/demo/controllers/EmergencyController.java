@@ -51,6 +51,29 @@ public class EmergencyController {
         return new Emergency();
     }
 
+    @PostMapping("/emergencies/ncreate")
+    @ResponseBody
+    public Emergency nInsertEmergency(@RequestBody Map<String, Object> jsonData) {
+
+        Long idUser = Long.parseLong(jsonData.get("user").toString());
+
+        try {
+            User user = userRepository.findUserById(idUser);
+            // Una vez que se verifica que ninguna referencia sea nula
+            return repository.save(new Emergency(jsonData.get("type").toString(),
+                                                jsonData.get("description").toString(),
+                                                Integer.valueOf(jsonData.get("capacity").toString()),
+                                                Integer.valueOf(jsonData.get("status").toString()),
+                                                user,
+                                                jsonData.get("latitude").toString(),
+                                                jsonData.get("longitude").toString()));
+        }
+        catch (NullPointerException e) {
+            System.out.println("User does not exist!!");
+        }
+        return new Emergency();
+    }
+
     @PutMapping("/emergencies/{id}")
     public ResponseEntity<Object> updateEmergency(@RequestBody Emergency emergency, @PathVariable long id) {
 
