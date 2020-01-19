@@ -1,5 +1,9 @@
 package com.example.demo.models;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 
@@ -33,8 +37,37 @@ public class Emergency {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "`latitude`")
+    private String latitude;
+
+    @Column(name = "`longitude`")
+    private String longitude;
+
+    @Column(columnDefinition = "Geometry", name = "`location`", nullable = true)
+    private Point location;
+
     // Constructor Vacío.
     public Emergency() { }
+
+    //Mew Constructor
+    public Emergency( String type, String description, Integer capacity, Integer status, User user, String latitude, String longitude) {
+        this.type = type;
+        this.description = description;
+        this.capacity = capacity;
+        this.status = status;
+        this.user = user;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        Coordinate coordinate = new Coordinate();
+        coordinate.x = Double.parseDouble(latitude);;
+        coordinate.y = Double.parseDouble(longitude);;
+
+        this.location = geometryFactory.createPoint(coordinate);
+    }
 
     // Constructor.
     public Emergency( String type, String description, Integer capacity, Integer status, User user) {
@@ -44,6 +77,7 @@ public class Emergency {
         this.status = status;
         this.user = user;
     }
+
 
     // Getter y Setter.
     public Long getIdEmergency() { return id; }
@@ -82,5 +116,27 @@ public class Emergency {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLocation(Double x, Double y) {
+        Double i,j;
+        i = Double.parseDouble(latitude);
+        j = Double.parseDouble(longitude);
+
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        Coordinate coordinate = new Coordinate();
+        coordinate.x = i;
+        coordinate.y = j;
+
+        this.location = geometryFactory.createPoint(coordinate);
     }
 }
