@@ -5,6 +5,7 @@ import com.example.demo.repositories.*;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.spatial4j.distance.DistanceUtils;
 import org.postgis.PGgeometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -417,16 +418,18 @@ public class VoluntaryController {
         map.put("n = ", String.valueOf(n));
 
 
-        /*
+
+/*
         map.put("Emergency = ", emergency.getDescription());
         map.put("Point A = ", String.valueOf( vols.get(0).getLocation().getX()));
         map.put("Point B = ", String.valueOf(vols.get(1).getLocation().getX()));
         dist = vols.get(0).getLocation().distance( vols.get(1).getLocation());
         map.put("distancia (distance) = ", String.valueOf(dist));
+        map.put("distancia (meters) = ", String.valueOf(DistanceUtils.degrees2Dist(dist ,DistanceUtils.EARTH_MEAN_RADIUS_KM)));
 
         result.add(map);
         return result;
-        */
+*/
 
         aux = vols.get(0);
         int j, indice=0;
