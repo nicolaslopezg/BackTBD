@@ -356,7 +356,7 @@ public class VoluntaryController {
 
     @GetMapping(value = "/voluntariosDisponibles/{radio}/{id_emergencia}")
     @ResponseBody
-    public List<Voluntary> getDisponibles(@PathVariable Long radio, @PathVariable Long id_emergencia) {
+    public List<Voluntary> getDisponibles(@PathVariable double radio, @PathVariable Long id_emergencia) {
         //Recibo el radio en kilometros
 
         List<Voluntary> voluntarios = voluntaryRepository.findAll();
@@ -387,16 +387,9 @@ public class VoluntaryController {
             coordinateEmergencia.y = lon2;
             Point locationEmergencia = geometryFactory2.createPoint(coordinateEmergencia);
 
-            /*double lat2 = 52.85768;
-            double lon2 = 14.39293;
-            double theta = lon1 - lon2;
-            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            dist = Math.acos(dist);
-            dist = Math.toDegrees(dist);
-            dist = dist * 60 * 1.1515;
-            dist = dist * 1.609344; //La entrega en kilometros
-            */
-            if (isWithinDistance(locationEmergencia,locationVoluntario,radio)){
+            double radio_grados = DistanceUtils.dist2Degrees(radio ,DistanceUtils.EARTH_MEAN_RADIUS_KM);
+
+            if (isWithinDistance(locationEmergencia,locationVoluntario,radio_grados)){
                 voluntarios_disponibles.add(voluntarios.get(i));
             }
         }
