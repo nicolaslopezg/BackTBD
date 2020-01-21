@@ -2,6 +2,10 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.*;
 import com.example.demo.repositories.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.postgis.PGgeometry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.sql.*;
+
+import static org.locationtech.jts.operation.distance.DistanceOp.isWithinDistance;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -28,6 +35,8 @@ public class VoluntaryController {
     DimensionRepository dimensionRepository;
     @Autowired
     VoluntaryDimensionRepository voluntaryDimensionRepository;
+    @Autowired
+    EmergencyRepository emergencyRepository;
 
     @GetMapping
     @ResponseBody
@@ -320,5 +329,77 @@ public class VoluntaryController {
         // De la tabla Voluntary-Dimension, obtengo sólo los campos que tienen la Dimension consultada.
         List<VoluntaryDimension> voluntaryDimensions = voluntaryDimensionRepository.findVoluntaryDimensionByDimensionOrderByQuantityDesc(dimension);
         return voluntaryDimensions;
+    }
+
+    @GetMapping(value = "/distanciaVoluntarios/{id}")
+    @ResponseBody
+    public double getDistance(@PathVariable Long id) {
+        Voluntary user = voluntaryRepository.findVoluntaryById(id);
+        String lat = user.getLatitude();
+        String lon = user.getLongitude();
+
+        double lat1 = Double.parseDouble(lat);
+        double lon1 = Double.parseDouble(lon);
+
+        double lat2 = 52.85768;
+        double lon2 = 14.39293;
+        double theta = lon1 - lon2;
+        double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+        dist = Math.acos(dist);
+        dist = Math.toDegrees(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344; //La entrega en kilometros
+
+        return dist;
+    }
+
+    @GetMapping(value = "/voluntariosDisponibles/{radio}/{id_emergencia}")
+    @ResponseBody
+    public List<Voluntary> getDisponibles(@PathVariable Long radio, @PathVariable Long id_emergencia) {
+        //Recibo el radio en kilometros
+
+        List<Voluntary> voluntarios = voluntaryRepository.findAll();
+        Emergency emergency = emergencyRepository.findEmergencyById(id_emergencia);
+        List<Voluntary> voluntarios_disponibles = new ArrayList<>();
+
+        for (int i = 0; i < voluntarios.size(); i++){
+
+            String lat = voluntarios.get(i).getLatitude();
+            String lon = voluntarios.get(i).getLongitude();
+
+            String latE = emergency.getLatitude();
+            String lonE = emergency.getLongitude();
+
+            GeometryFactory geometryFactory1 = new GeometryFactory();
+            Coordinate coordinateVoluntario = new Coordinate();
+            double lat1 = Double.parseDouble(lat);
+            double lon1 = Double.parseDouble(lon);
+            coordinateVoluntario.x = lat1;
+            coordinateVoluntario.y = lon1;
+            Point locationVoluntario = geometryFactory1.createPoint(coordinateVoluntario);
+
+            GeometryFactory geometryFactory2 = new GeometryFactory();
+            Coordinate coordinateEmergencia = new Coordinate();
+            double lat2 = Double.parseDouble(latE);
+            double lon2 = Double.parseDouble(lonE);
+            coordinateEmergencia.x = lat2;
+            coordinateEmergencia.y = lon2;
+            Point locationEmergencia = geometryFactory2.createPoint(coordinateEmergencia);
+
+            /*double lat2 = 52.85768;
+            double lon2 = 14.39293;
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            dist = dist * 1.609344; //La entrega en kilometros
+            */
+            if (isWithinDistance(locationEmergencia,locationVoluntario,radio)){
+                voluntarios_disponibles.add(voluntarios.get(i));
+            }
+        }
+
+        return voluntarios_disponibles;
     }
 }
