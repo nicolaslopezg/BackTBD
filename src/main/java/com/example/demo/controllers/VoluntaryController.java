@@ -402,4 +402,54 @@ public class VoluntaryController {
 
         return voluntarios_disponibles;
     }
+
+    @GetMapping("/topDistance/{n}")
+    @ResponseBody
+    public List<Voluntary> getTopDVoluntaries(@PathVariable int n, @RequestBody Map<String, Object> jsonData){
+        Long id = Long.parseLong(jsonData.get("id").toString());
+        Emergency emergency = emergencyRepository.findEmergencyById(id);
+        List<Voluntary> vols = getAllVolunteers();
+        List<Voluntary> top= new ArrayList<>();
+        Voluntary aux = new Voluntary();
+        Double dist=-1.0;
+        HashMap<String, String> map = new HashMap<>();
+        List<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+        map.put("n = ", String.valueOf(n));
+
+
+        /*
+        map.put("Emergency = ", emergency.getDescription());
+        map.put("Point A = ", String.valueOf( vols.get(0).getLocation().getX()));
+        map.put("Point B = ", String.valueOf(vols.get(1).getLocation().getX()));
+        dist = vols.get(0).getLocation().distance( vols.get(1).getLocation());
+        map.put("distancia (distance) = ", String.valueOf(dist));
+
+        result.add(map);
+        return result;
+        */
+
+        aux = vols.get(0);
+        int j, indice=0;
+        for(int i = 0; i < n; i = i + 1){
+            dist= emergency.getLocation().distance(vols.get(0).getLocation());
+            j=0;
+            indice=0;
+            for (Voluntary voluntary: vols){
+                if (dist>emergency.getLocation().distance(voluntary.getLocation())){
+                    dist= emergency.getLocation().distance(voluntary.getLocation());
+                    aux = voluntary;
+                    indice=j;
+                }
+                j++;
+            }
+            //map.put("name = ", aux.getName()+" i = "+String.valueOf(i));
+            System.out.println("name = "+ aux.getName()+" i = "+String.valueOf(i));
+            top.add(aux);
+            vols.remove(indice);
+        }
+        //result.add(map);
+        //return result;
+        return top;
+    }
+
 }

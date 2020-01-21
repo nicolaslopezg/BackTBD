@@ -1,10 +1,11 @@
 package com.example.demo.models;
 
 
-import org.hibernate.annotations.Type;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.postgis.Geometry;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,7 +50,8 @@ public class Voluntary implements Serializable {
     @Column(name = "`longitude`")
     private String longitude;
 
-    @Column(columnDefinition = "Geometry", name = "`location`", nullable = true)
+    @Column(columnDefinition = "geometry(Point, 4326)", name = "`location`", nullable = true)
+    @JsonIgnore
     private Point location;
 
 
@@ -72,10 +74,12 @@ public class Voluntary implements Serializable {
         GeometryFactory geometryFactory = new GeometryFactory();
 
         Coordinate coordinate = new Coordinate();
-        coordinate.x = Double.parseDouble(latitude);;
-        coordinate.y = Double.parseDouble(longitude);;
+        coordinate.x = Double.parseDouble(latitude);
+        coordinate.y = Double.parseDouble(longitude);
 
         this.location = geometryFactory.createPoint(coordinate);
+        this.location.setSRID(4326);
+
     }
 
     // Constructor.
@@ -152,6 +156,8 @@ public class Voluntary implements Serializable {
     public String getLongitude() {
         return longitude;
     }
+
+    public Point getLocation() { return location;}
 
     public void setLocation(Double x, Double y) {
         Double i,j;
