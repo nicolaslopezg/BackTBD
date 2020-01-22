@@ -397,10 +397,10 @@ public class VoluntaryController {
         return voluntarios_disponibles;
     }
 
-    @GetMapping("/topDistance/{n}")
+    @GetMapping("/topDistance/{n}/{iduser}")
     @ResponseBody
-    public List<Voluntary> getTopDVoluntaries(@PathVariable int n, @RequestBody Map<String, Object> jsonData){
-        Long id = Long.parseLong(jsonData.get("id").toString());
+    public List<Voluntary> getTopDVoluntaries(@PathVariable int n, @PathVariable Long iduser){
+        Long id = iduser;
         Emergency emergency = emergencyRepository.findEmergencyById(id);
         List<Voluntary> vols = getAllVolunteers();
         List<Voluntary> top= new ArrayList<>();

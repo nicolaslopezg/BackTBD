@@ -269,8 +269,8 @@ public class Auxiliar {
         userRepository.save(new User(196756578,"Claudio","Bravo","claudiobravo@gmail.com",roleRepository.findRoleByType(2)));
 
         //Se guardan emergencias
-        emergencyRepository.save(new Emergency("Incendio","Se queman los arboles",30,1,userRepository.findUserByRut(197893478)));
-        emergencyRepository.save(new Emergency("Dar comida","Ayudar a los pobres",50,2,userRepository.findUserByRut(346653478)));
+        emergencyRepository.save(new Emergency("Incendio","Se queman los arboles",30,1,userRepository.findUserByRut(197893478),"36.6803","53.0193"));
+        emergencyRepository.save(new Emergency("Dar comida","Ayudar a los pobres",50,2,userRepository.findUserByRut(346653478),"32.6803","50.0193"));
 
         //Se guardan tareas
         taskRepository.save(new Task("Incendio","Se queman los arboles",30,1,emergencyRepository.findEmergencyByType("Incendio"),userRepository.findUserByRut(197893478)));
